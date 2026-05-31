@@ -1,6 +1,11 @@
 # 忘却前夜ダメージ計算ツール
 
-bokyakuzenya_damege_calculator.htmlをダウンロードしていただき、手元で開けば動くはずです（現状PCなどが必要かもしれません。すみません）
+web上で使いたいだけの人は
+https://mayoineko26.github.io/bokyakuzenya_damage_calculator/
+に飛んでください
+
+index.htmlがメインファイルです。
+バグ報告などは公式Discord中のスレッドまで
 
 Geminiにベースを作ってもらい、データなどを打ち込むことで完成予定です。
 今後登場する覚醒体にも対応できるよう数値を直接入力することも可能としていますが、覚醒体と札を選んである程度自動計算できるようにもしたいと考えています。
