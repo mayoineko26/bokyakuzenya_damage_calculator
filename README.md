@@ -1,0 +1,2 @@
+# bokyakuzenya_damage_calculator
+忘却前夜のダメージ計算ツールです
