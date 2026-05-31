@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>忘却前夜 ダメージ計算ツール v0</title>
+    <title>忘却前夜 ダメージ計算ツール v0.1</title>
     <style>
         :root {
             --bg-color: #12141c;
@@ -253,7 +253,7 @@
             color: var(--text-sub);
             line-height: 1.6;
             border: 1px solid rgba(255,255,255,0.05);
-            max-height: 320px;
+            max-height: 340px;
             overflow-y: auto;
         }
 
@@ -262,7 +262,6 @@
             padding: 4px 0;
         }
 
-        /* 更新履歴エリア用のスタイル */
         .history-section {
             background: var(--history-bg);
             border: 1px solid var(--border-color);
@@ -319,11 +318,12 @@
 
 <div class="container">
     <header>
-        <h1>忘却前夜 ダメージ計算ツール v0</h1>
+        <h1>忘却前夜 ダメージ計算ツール v0.1</h1>
         <p>触腕ダメージ未対応、単発分のダメージのみ計算、キャラデータは入力中</p>
     </header>
 
     <div class="content">
+        <!-- 入力モードの切り替えスイッチ -->
         <div class="mode-selector">
             <label>
                 <input type="radio" name="inputMode" value="manual" checked onchange="toggleInputMode()">
@@ -335,6 +335,7 @@
             </label>
         </div>
 
+        <!-- データベース選択エリア -->
         <div id="databaseSelectionArea" style="display: none;">
             <div class="section-title">選択オプション</div>
             <div class="grid-2">
@@ -385,6 +386,7 @@
             </div>
         </div>
 
+        <!-- 基礎値の入力 -->
         <div class="section-title">1. 基礎値の設定</div>
         <div class="grid-2">
             <div class="input-group">
@@ -417,6 +419,7 @@
             </div>
         </div>
 
+        <!-- バフ・効果枠の設定 -->
         <div class="section-title">2. バフ・効果枠の設定</div>
         <div class="grid-2">
             <div class="input-group">
@@ -447,6 +450,7 @@
                 </div>
             </div>
 
+            <!-- クリティカルダメージ -->
             <div class="input-group">
                 <label>⑤ クリティカルダメージ</label>
                 <label class="checkbox-wrapper">
@@ -459,6 +463,15 @@
                 </div>
             </div>
 
+            <!-- その他・デバフ合算グループ (すべて⑥番) -->
+            <div class="input-group">
+                <label for="otherBuff">⑥ その他枠（基本値）</label>
+                <div class="input-wrapper">
+                    <input type="number" id="otherBuff" value="0" step="1" oninput="calculateDamage()">
+                    <span class="unit">%</span>
+                </div>
+            </div>
+
             <div class="input-group">
                 <label for="softening">⑥ 敵の「軟化」デバフ値</label>
                 <div class="input-wrapper">
@@ -467,22 +480,15 @@
             </div>
 
             <div class="input-group">
-                <label for="languor">⑦ 味方の「倦怠」デバフ値</label>
+                <label for="languor">⑥ 味方の「倦怠」デバフ値</label>
                 <div class="input-wrapper">
                     <input type="number" id="languor" value="0" min="0" max="3" step="1" oninput="calculateDamage()">
                 </div>
             </div>
 
+            <!-- 以降の番号を繰り上げ -->
             <div class="input-group">
-                <label for="otherBuff">⑧ その他枠（軟化・倦怠以外）</label>
-                <div class="input-wrapper">
-                    <input type="number" id="otherBuff" value="0" step="1" oninput="calculateDamage()">
-                    <span class="unit">%</span>
-                </div>
-            </div>
-
-            <div class="input-group">
-                <label for="finalEffect">⑨ 最終効果</label>
+                <label for="finalEffect">⑦ 最終効果</label>
                 <div class="input-wrapper">
                     <input type="number" id="finalEffect" value="0" step="1" oninput="calculateDamage()">
                     <span class="unit">%</span>
@@ -490,7 +496,7 @@
             </div>
 
             <div class="input-group">
-                <label for="solid">⑩ 敵の「堅固」バフ値</label>
+                <label for="solid">⑧ 敵の「堅固」バフ値</label>
                 <div class="input-wrapper">
                     <input type="number" id="solid" value="0" min="0" max="100" step="1" oninput="calculateDamage()">
                     <span class="unit">%</span>
@@ -498,6 +504,7 @@
             </div>
         </div>
 
+        <!-- 計算結果 -->
         <div class="section-title">3. 計算結果</div>
         <div class="result-container">
             <div class="result-label">予測最終ダメージ</div>
@@ -507,18 +514,20 @@
         <div class="result-label" style="text-align: left; margin-top: 16px; font-size: 12px; color: var(--accent-hover);">計算プロセス（切り上げの履歴）</div>
         <div class="process-log" id="processLog"></div>
 
+        <!-- 更新履歴スペース -->
         <div class="history-section">
             <div class="history-title">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 更新履歴
             </div>
             <ul class="history-list">
-                <li><span class="history-date">v0:ベータ版公開</span></li>
+              <li><span class="history-date">v0.1:軟化、倦怠の計算式を修正</span></li>
+              <li><span class="history-date">v0:ベータ版公開</span></li>
             </ul>
         </div>
 
         <div class="footer-text">
-            ※ベータ版のためダメージがずれる可能性があります。自己責任でご使用ください
+          ※ベータ版のためダメージがずれる可能性があります。自己責任でご使用ください
         </div>
     </div>
 </div>
@@ -652,6 +661,7 @@ const CHARACTER_MASTER = [
   }*/
 ];
 
+
 // ==========================================
 // モード切り替え・セレクトボックス構築ロジック
 // ==========================================
@@ -738,7 +748,7 @@ function applyDatabaseValues() {
     document.getElementById('atk').value = calculatedAtk;
     document.getElementById('calcFormulaHint').innerText = formulaText;
 
-    // 2. 選択されたカードから、現在の「凸数」に応じた性能を自動抽出
+    // 2. 選択されたカードから凸数に応じた性能を自動抽出
     if (char.cards && char.cards[cardIndex]) {
         const card = char.cards[cardIndex];
 
@@ -798,15 +808,28 @@ function calculateDamage() {
     const critInput = parseFloat(document.getElementById('critical').value) || 0;
     const criticalRate = isCritical ? (1 + critInput / 100) : 1.0;
 
-    let softeningInput = parseFloat(document.getElementById('softening').value) || 0;
+    // 軟化・倦怠の値を加減算の数値として取得
+    let softeningInput = parseInt(document.getElementById('softening').value) || 0;
     let softVal = softeningInput > 3 ? 3 : softeningInput;
-    const softeningMultiplier = softVal > 0 ? (1 + 0.2 + 0.1 * softVal) : 1.0;
+    let softAddPercent = 0;
+    if (softVal === 1) softAddPercent = 30;
+    else if (softVal === 2) softAddPercent = 40;
+    else if (softVal === 3) softAddPercent = 50;
 
-    let languorInput = parseFloat(document.getElementById('languor').value) || 0;
+    let languorInput = parseInt(document.getElementById('languor').value) || 0;
     let langVal = languorInput > 3 ? 3 : languorInput;
-    const languorMultiplier = langVal > 0 ? (1 - 0.1 - 0.05 * langVal) : 1.0;
+    let langSubPercent = 0;
+    if (langVal === 1) langSubPercent = 15;
+    else if (langVal === 2) langSubPercent = 20;
+    else if (langVal === 3) langSubPercent = 25;
 
-    const otherBuff = 1 + (parseFloat(document.getElementById('otherBuff').value) || 0) / 100;
+    // その他枠のベース値を取得
+    const otherBuffInput = parseFloat(document.getElementById('otherBuff').value) || 0;
+
+    // その他枠ベース + 軟化加算 - 倦怠減算
+    const totalOtherPercent = otherBuffInput + softAddPercent - langSubPercent;
+    const totalOtherMultiplier = 1 + (totalOtherPercent / 100);
+
     const finalEffect = 1 + (parseFloat(document.getElementById('finalEffect').value) || 0) / 100;
     const solidRate = (100 - (parseFloat(document.getElementById('solid').value) || 0)) / 100;
 
@@ -839,29 +862,21 @@ function calculateDamage() {
         log.push(`【ステップ5】 クリティカル未発生 (× 1.0) = ${step5}`);
     }
 
-    let step6 = Math.ceil(step5 * softeningMultiplier);
-    if (softeningInput > 0) {
-        let capMsg = softeningInput > 3 ? " (上限3制限)" : "";
-        log.push(`【ステップ6】 前の値 (${step5}) × 軟化補正${capMsg} [1+0.2+0.1×${softVal}] (${softeningMultiplier.toFixed(2)}倍) = ${step6} (切り上げ)`);
-    }
+    // UIに同期させた【ステップ6】（その他合計枠）
+    let step6 = Math.ceil(step5 * totalOtherMultiplier);
+    let logOtherParts = [`その他ベース(${otherBuffInput}%)`];
+    if (softVal > 0) logOtherParts.push(`軟化${softVal}(+${softAddPercent}%)`);
+    if (langVal > 0) logOtherParts.push(`倦怠${langVal}(-${langSubPercent}%)`);
+    log.push(`【ステップ6: その他】 前の値 (${step5}) × その他合計倍率 [${logOtherParts.join(' + ')} ➔ 計 ${totalOtherPercent}%] (${totalOtherMultiplier.toFixed(2)}倍) = ${step6} (切り上げ)`);
 
-    let step6_2 = Math.ceil(step6 * languorMultiplier);
-    if (languorInput > 0) {
-        let capMsg = languorInput > 3 ? " (上限3制限)" : "";
-        log.push(`【ステップ6-2】 前の値 (${step6}) × 倦怠補正${capMsg} [1-0.1-0.05×${langVal}] (${languorMultiplier.toFixed(2)}倍) = ${step6_2} (切り上げ)`);
-    } else {
-        step6_2 = step6;
-    }
+    // UIに同期させた【ステップ7】（最終効果）
+    let step7 = Math.ceil(step6 * finalEffect);
+    log.push(`【ステップ7】 前の値 (${step6}) × 最終効果 (${(finalEffect*100-100).toFixed(0)}%) = ${step7} (切り上げ)`);
 
-    let step7 = Math.ceil(step6_2 * otherBuff);
-    log.push(`【ステップ7】 前の値 (${step6_2}) × その他枠 (${(otherBuff*100-100).toFixed(0)}%) = ${step7} (切り上げ)`);
-
-    let step8 = Math.ceil(step7 * finalEffect);
-    log.push(`【ステップ8】 前の値 (${step7}) × 最終効果 (${(finalEffect*100-100).toFixed(0)}%) = ${step8} (切り上げ)`);
-
-    let finalDamage = Math.ceil(step8 * solidRate);
+    // UIに同期させた【ステップ8】（堅固）
+    let finalDamage = Math.ceil(step7 * solidRate);
     if (solidRate < 1.0) {
-        log.push(`【ステップ9: 堅固】 前の値 (${step8}) × 堅固補正 [100% - ${100 - solidRate*100}%] = ${finalDamage} (切り上げ)`);
+        log.push(`【ステップ8: 堅固】 前の値 (${step7}) × 堅固補正 [100% - ${100 - solidRate*100}%] = ${finalDamage} (切り上げ)`);
     }
 
     if (finalDamage < 1) {
