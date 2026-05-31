@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>忘却前夜 ダメージ計算ツール v13</title>
+    <style>
+        :root {
+            --bg-color: #12141c;
+            --card-bg: #1a1d29;
+            --accent-color: #9d4edf;
+            --accent-hover: #b476ef;
+            --text-main: #f0f2f5;
+            --text-sub: #9aa0a6;
+            --border-color: #2f3446;
+            --result-bg: #241b35;
+            --result-border: #bd85ff;
+            --history-bg: #151821;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1f1435 0%, #0d0e15 100%);
+            padding: 24px;
+            border-bottom: 2px solid var(--accent-color);
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        header p {
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-top: 6px;
+        }
+
+        .content {
+            padding: 24px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            color: var(--accent-hover);
+            margin-bottom: 16px;
+            padding-left: 8px;
+            border-left: 4px solid var(--accent-color);
+            font-weight: bold;
+        }
+
+        .mode-selector {
+            display: flex;
+            background: #0f111a;
+            padding: 6px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            gap: 4px;
+        }
+
+        .mode-selector label {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 6px;
+            color: var(--text-sub);
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+
+        .mode-selector input[type="radio"] {
+            display: none;
+        }
+
+        .mode-selector input[type="radio"]:checked + span {
+            background: var(--accent-color);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(157, 78, 223, 0.4);
+        }
+
+        .mode-selector span {
+            display: block;
+            width: 100%;
+            height: 100%;
+            padding: 8px 0;
+            border-radius: 6px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 600px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .input-group {
+            background: rgba(255,255,255,0.02);
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper input[type="number"], .input-wrapper select {
+            width: 100%;
+            background: #0f111a;
+            border: 1px solid var(--border-color);
+            color: #fff;
+            padding: 10px 45px 10px 12px;
+            border-radius: 6px;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-wrapper select {
+            padding-right: 20px;
+            appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%239aa0a6' viewBox='0 0 16 16'><path d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/></svg>");
+            background-repeat: no-repeat;
+            background-position: calc(100% - 12px) center;
+        }
+
+        .input-wrapper input[type="number"]:focus, .input-wrapper select:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(157, 78, 223, 0.2);
+        }
+
+        .input-wrapper input:disabled, .input-wrapper select:disabled {
+            background: #161822;
+            color: #62677b;
+            border-color: #242736;
+            cursor: not-allowed;
+        }
+
+        .input-wrapper .unit {
+            position: absolute;
+            right: 12px;
+            color: var(--text-sub);
+            font-size: 13px;
+            pointer-events: none;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            padding: 4px 0;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent-color);
+            cursor: pointer;
+        }
+
+        .checkbox-label-text {
+            font-size: 14px;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .result-container {
+            background: var(--result-bg);
+            border: 1px solid var(--result-border);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 24px;
+            box-shadow: inset 0 0 10px rgba(157, 78, 223, 0.2);
+        }
+
+        .result-label {
+            font-size: 14px;
+            color: #d1b3ff;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .result-value {
+            font-size: 36px;
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 0 0 12px rgba(189, 133, 255, 0.6);
+        }
+
+        .process-log {
+            margin-top: 16px;
+            background: #0d0f16;
+            padding: 12px;
+            border-radius: 6px;
+            text-align: left;
+            font-size: 12px;
+            color: var(--text-sub);
+            line-height: 1.6;
+            border: 1px solid rgba(255,255,255,0.05);
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .process-log div {
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            padding: 4px 0;
+        }
+
+        /* 更新履歴エリア用のスタイル */
+        .history-section {
+            background: var(--history-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 32px;
+        }
+
+        .history-title {
+            font-size: 14px;
+            color: var(--text-main);
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .history-list {
+            list-style: none;
+            font-size: 12px;
+            color: var(--text-sub);
+            line-height: 1.6;
+        }
+
+        .history-list li {
+            margin-bottom: 6px;
+            padding-left: 12px;
+            position: relative;
+        }
+
+        .history-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+        }
+
+        .history-date {
+            font-weight: bold;
+            color: #c494f5;
+            margin-right: 6px;
+        }
+
+        .footer-text {
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-sub);
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>忘却前夜 ダメージ計算ツール v0</h1>
+        <p>触腕ダメージ未対応、単発分のダメージのみ計算、キャラデータは入力中</p>
+    </header>
+
+    <div class="content">
+        <div class="mode-selector">
+            <label>
+                <input type="radio" name="inputMode" value="manual" checked onchange="toggleInputMode()">
+                <span>自由に入力する</span>
+            </label>
+            <label>
+                <input type="radio" name="inputMode" value="auto" onchange="toggleInputMode()">
+                <span>データベースから選択する</span>
+            </label>
+        </div>
+
+        <div id="databaseSelectionArea" style="display: none;">
+            <div class="section-title">選択オプション</div>
+            <div class="grid-2">
+                <div class="input-group">
+                    <label for="charSelect">覚醒体</label>
+                    <div class="input-wrapper">
+                        <select id="charSelect" onchange="updateCardOptions(); applyDatabaseValues();"></select>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="charLevelInput">覚醒体Lv</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="charLevelInput" value="1" min="1" max="100" step="1" oninput="applyDatabaseValues();">
+                        <span class="unit">Lv</span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="charAwakenInput">凸数</label>
+                    <div class="input-wrapper">
+                        <select id="charAwakenInput" onchange="applyDatabaseValues();">
+                            <script>
+                                for(let i=0; i<=15; i++){
+                                    document.write(`<option value="${i}">${i}凸</option>`);
+                                }
+                            </script>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="cardSelect">カード / 狂気解放名</label>
+                    <div class="input-wrapper">
+                        <select id="cardSelect" onchange="applyDatabaseValues();"></select>
+                    </div>
+                </div>
+                <div class="input-group" style="grid-column: span 2;">
+                    <label for="skillSelect">スキルLv</label>
+                    <div class="input-wrapper">
+                        <select id="skillSelect" onchange="applyDatabaseValues();">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">1. 基礎値の設定</div>
+        <div class="grid-2">
+            <div class="input-group">
+                <label for="atk">覚醒体の攻撃力</label>
+                <div class="input-wrapper">
+                    <input type="number" id="atk" value="100" min="0" step="1" oninput="calculateDamage()">
+                </div>
+                <div id="calcFormulaHint" style="font-size: 11px; color: var(--accent-hover); margin-top: 4px; display: none;"></div>
+            </div>
+            <div class="input-group">
+                <label for="multiplier">カード / 狂気解放の倍率</label>
+                <div class="input-wrapper">
+                    <input type="number" id="multiplier" value="20" min="0" step="1" oninput="calculateDamage()">
+                    <span class="unit">%</span>
+                </div>
+                <div id="awakenOverlayHint" style="font-size: 11px; color: #5cb85c; margin-top: 4px; display: none;"></div>
+            </div>
+            <div class="input-group">
+                <label for="powerBonus">力ボーナス</label>
+                <div class="input-wrapper">
+                    <input type="number" id="powerBonus" value="100" min="0" step="1" oninput="calculateDamage()">
+                    <span class="unit">%</span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="baseAdd">カードによる基礎値への加算</label>
+                <div class="input-wrapper">
+                    <input type="number" id="baseAdd" value="0" min="0" step="1" oninput="calculateDamage()">
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">2. バフ・効果枠の設定</div>
+        <div class="grid-2">
+            <div class="input-group">
+                <label for="baseBuff">① 基礎値バフ</label>
+                <div class="input-wrapper">
+                    <input type="number" id="baseBuff" value="0" step="1" oninput="calculateDamage()">
+                    <span class="unit">%</span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="baseEffectUp">② 基礎効果の上昇</label>
+                <div class="input-wrapper">
+                    <input type="number" id="baseEffectUp" value="0" step="1" oninput="calculateDamage()">
+                    <span class="unit">%</span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="damageEnhance">③ ダメージ強化</label>
+                <div class="input-wrapper">
+                    <input type="number" id="damageEnhance" value="0" step="1" oninput="calculateDamage()">
+                    <span class="unit">%</span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="power">④ 力</label>
+                <div class="input-wrapper">
+                    <input type="number" id="power" value="0" min="0" step="1" oninput="calculateDamage()">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>⑤ クリティカルダメージ</label>
+                <label class="checkbox-wrapper">
+                    <input type="checkbox" id="isCritical" onchange="calculateDamage()">
+                    <span class="checkbox-label-text">クリティカル発生</span>
+                </label>
+                <div class="input-wrapper" style="margin-top: 4px;">
+                    <input type="number" id="critical" value="50" min="0" step="1" oninput="calculateDamage()">
+                    <span class="unit">%</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="softening">⑥ 敵の「軟化」デバフ値</label>
+                <div class="input-wrapper">
+                    <input type="number" id="softening" value="0" min="0" max="3" step="1" oninput="calculateDamage()">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="languor">⑦ 味方の「倦怠」デバフ値</label>
+                <div class="input-wrapper">
+                    <input type="number" id="languor" value="0" min="0" max="3" step="1" oninput="calculateDamage()">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="otherBuff">⑧ その他枠（軟化・倦怠以外）</label>
+                <div class="input-wrapper">
+                    <input type="number" id="otherBuff" value="0" step="1" oninput="calculateDamage()">
+                    <span class="unit">%</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="finalEffect">⑨ 最終効果</label>
+                <div class="input-wrapper">
+                    <input type="number" id="finalEffect" value="0" step="1" oninput="calculateDamage()">
+                    <span class="unit">%</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="solid">⑩ 敵の「堅固」バフ値</label>
+                <div class="input-wrapper">
+                    <input type="number" id="solid" value="0" min="0" max="100" step="1" oninput="calculateDamage()">
+                    <span class="unit">%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">3. 計算結果</div>
+        <div class="result-container">
+            <div class="result-label">予測最終ダメージ</div>
+            <div class="result-value" id="totalDamage">0</div>
+        </div>
+
+        <div class="result-label" style="text-align: left; margin-top: 16px; font-size: 12px; color: var(--accent-hover);">計算プロセス（切り上げの履歴）</div>
+        <div class="process-log" id="processLog"></div>
+
+        <div class="history-section">
+            <div class="history-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                更新履歴
+            </div>
+            <ul class="history-list">
+                <li><span class="history-date">v0:ベータ版公開</span></li>
+            </ul>
+        </div>
+
+        <div class="footer-text">
+            ※各ステップの掛け算の直後に端数を切り上げています。最終結果は最小1を保証します。
+        </div>
+    </div>
+</div>
+
+<script>
+// ==========================================
+// データベース用配列マスタ
+// ==========================================
+const CHARACTER_MASTER = [
+  {
+      name: "ラモンナ",
+      baseAtk: 150,
+      type: "standard",
+      cards: [
+          {
+              name: "攻撃",
+              skills: [10, 12, 14, 16, 18, 20],
+              powerBonus: 100
+          },
+          {
+              name: "女王の剣",
+              skills: [15, 18, 21, 24, 27, 30],
+              powerBonus: 100
+          }
+      ]
+  },
+  {
+      name: "オジール",
+      baseAtk: 145,
+      type: "standard",
+      cards: [
+          {
+              name: "攻撃",
+              skills: [10, 12, 14, 16, 18, 20],
+              powerBonus: 100
+          },
+          {
+              name: "刺突の槍",
+              skills: [30, 36, 42, 48, 54, 60],
+              powerBonus: 100
+          }
+      ]
+  },
+  {
+      name: "ロータン",
+      baseAtk: 165,
+      type: "standard",
+      cards: [
+          {
+              name: "攻撃",
+              skills: [10, 12, 14, 16, 18, 20],
+              powerBonus: 100
+          },
+          {
+              name: "傲慢の刃",
+              skills: [15, 18, 21, 24, 27, 30],
+              powerBonus: 100
+          },
+          {
+              name: "恣意の波",
+              skills: [15, 18, 21, 24, 27, 30],
+              powerBonus: 100
+          },
+          {
+              name: "混沌の獣",
+              skills: [100, 120, 140, 160, 180, 200],
+              powerBonus: 300
+          }
+      ]
+  },
+  {
+      name: "ドール",
+      baseAtk: 165,
+      type: "standard",
+      cards: [
+          {
+              name: "攻撃",
+              skills: [10, 12, 14, 16, 18, 20],
+              powerBonus: 100
+          }
+      ]
+  }/*,
+  {
+      name: "サンプル覚醒体A (3凸でスキルと力ボーナス双方が強化される例)",
+      baseAtk: 120,
+      type: "standard",
+      cards: [
+          {
+              name: "攻撃",
+              skills: [10, 12, 14, 16, 18, 20],
+              powerBonus: 100
+          },
+          {
+              name: "サンプル",
+              skills: [150, 180, 210, 240, 270, 300], // 0〜2凸時の倍率
+              powerBonus: 80,                         // 0〜2凸時の力ボーナス
+
+              // 【機能強化】凸数ごとの上書き枠に、powerBonusも含められるようになりました
+              awakenOverrides: {
+                  3: {
+                      skills: [180, 215, 250, 285, 320, 355], // 3凸以上の倍率
+                      powerBonus: 120                        // 3凸以上の力ボーナス(80%から120%へ強化)
+                  }
+              }
+          }
+      ]
+  },
+  {
+      name: "サンプル覚醒体B (5凸で倍率のみ変化・力ボーナスは据え置きの例)",
+      baseAtk: 150,
+      type: "limited",
+      cards: [
+          {
+              name: "攻撃",
+              skills: [10, 12, 14, 16, 18, 20],
+              powerBonus: 100
+          },
+          {
+              name: "固有カード：シャドウスタブ",
+              skills: [30, 38, 46, 54, 62, 70],
+              powerBonus: 120,
+              awakenOverrides: {
+                  // 旧記述方法（配列のみ）や、powerBonusを省略した記述でも正常に動きます
+                  5: {
+                      skills: [45, 55, 65, 75, 85, 95]
+                      // powerBonusは書かなければデフォルトの「120」が維持されます
+                  }
+              }
+          }
+      ]
+  }*/
+];
+
+// ==========================================
+// モード切り替え・セレクトボックス構築ロジック
+// ==========================================
+function initDatabaseOptions() {
+    const charSelect = document.getElementById('charSelect');
+    charSelect.innerHTML = '';
+    CHARACTER_MASTER.forEach((char, index) => {
+        let opt = document.createElement('option');
+        opt.value = index;
+        opt.innerText = char.name;
+        charSelect.appendChild(opt);
+    });
+
+    updateCardOptions();
+}
+
+function updateCardOptions() {
+    const charIndex = document.getElementById('charSelect').value;
+    const cardSelect = document.getElementById('cardSelect');
+    cardSelect.innerHTML = '';
+
+    if (CHARACTER_MASTER[charIndex] && CHARACTER_MASTER[charIndex].cards) {
+        const characterCards = CHARACTER_MASTER[charIndex].cards;
+        characterCards.forEach((card, index) => {
+            let opt = document.createElement('option');
+            opt.value = index;
+            opt.innerText = card.name;
+            cardSelect.appendChild(opt);
+        });
+    }
+}
+
+function toggleInputMode() {
+    const mode = document.querySelector('input[name="inputMode"]:checked').value;
+    const dbArea = document.getElementById('databaseSelectionArea');
+    const atkInput = document.getElementById('atk');
+    const multiInput = document.getElementById('multiplier');
+    const pBonusInput = document.getElementById('powerBonus');
+    const formulaHint = document.getElementById('calcFormulaHint');
+    const awakenHint = document.getElementById('awakenOverlayHint');
+
+    if (mode === 'auto') {
+        dbArea.style.display = 'block';
+        formulaHint.style.display = 'block';
+        awakenHint.style.display = 'block';
+        atkInput.disabled = true;
+        multiInput.disabled = true;
+        pBonusInput.disabled = true;
+        applyDatabaseValues();
+    } else {
+        dbArea.style.display = 'none';
+        formulaHint.style.display = 'none';
+        awakenHint.style.display = 'none';
+        atkInput.disabled = false;
+        multiInput.disabled = false;
+        pBonusInput.disabled = false;
+        calculateDamage();
+    }
+}
+
+function applyDatabaseValues() {
+    const mode = document.querySelector('input[name="inputMode"]:checked').value;
+    if (mode !== 'auto') return;
+
+    const charIndex = document.getElementById('charSelect').value;
+    const level = parseInt(document.getElementById('charLevelInput').value) || 1;
+    const awaken = parseInt(document.getElementById('charAwakenInput').value) || 0;
+    const cardIndex = document.getElementById('cardSelect').value;
+    const skillLv = parseInt(document.getElementById('skillSelect').value) || 1;
+
+    if (!CHARACTER_MASTER[charIndex]) return;
+    const char = CHARACTER_MASTER[charIndex];
+
+    // 1. 覚醒体の攻撃力の自動算出
+    let calculatedAtk = 0;
+    let formulaText = "";
+    if (char.type === "standard") {
+        calculatedAtk = Math.ceil(char.baseAtk * (level + 20) / 100);
+        formulaText = `恒常式: 基礎${char.baseAtk} × (${level} + 20) / 100 = ${calculatedAtk}`;
+    } else if (char.type === "limited") {
+        calculatedAtk = Math.ceil(char.baseAtk * (level + 30) / 100);
+        formulaText = `限定式: 基礎${char.baseAtk} × (${level} + 30) / 100 = ${calculatedAtk}`;
+    }
+    document.getElementById('atk').value = calculatedAtk;
+    document.getElementById('calcFormulaHint').innerText = formulaText;
+
+    // 2. 選択されたカードから、現在の「凸数」に応じた性能を自動抽出
+    if (char.cards && char.cards[cardIndex]) {
+        const card = char.cards[cardIndex];
+
+        let activeSkills = [...card.skills];
+        let activePowerBonus = card.powerBonus !== undefined ? card.powerBonus : 100;
+        let awakenText = "通常性能を適用中";
+
+        if (card.awakenOverrides) {
+            let activeOverrideKey = -1;
+            Object.keys(card.awakenOverrides).forEach(key => {
+                let reqAwaken = parseInt(key);
+                if (awaken >= reqAwaken && reqAwaken > activeOverrideKey) {
+                    activeOverrideKey = reqAwaken;
+                }
+            });
+
+            if (activeOverrideKey !== -1) {
+                const overrideData = card.awakenOverrides[activeOverrideKey];
+                if (overrideData && typeof overrideData === 'object' && !Array.isArray(overrideData)) {
+                    if (overrideData.skills) activeSkills = overrideData.skills;
+                    if (overrideData.powerBonus !== undefined) {
+                        activePowerBonus = overrideData.powerBonus;
+                        awakenText = `🔥 ${activeOverrideKey}凸強化性能を適用中`;
+                    }
+                } else if (Array.isArray(overrideData)) {
+                    activeSkills = overrideData;
+                    awakenText = `🔥 ${activeOverrideKey}凸強化倍率を適用中`;
+                }
+            }
+        }
+
+        document.getElementById('multiplier').value = activeSkills[skillLv - 1] || 0;
+        document.getElementById('powerBonus').value = activePowerBonus;
+        document.getElementById('awakenOverlayHint').innerText = awakenText;
+    }
+
+    calculateDamage();
+}
+
+// ==========================================
+// コア計算ロジック
+// ==========================================
+function calculateDamage() {
+    const atk = parseFloat(document.getElementById('atk').value) || 0;
+    const multiplier = (parseFloat(document.getElementById('multiplier').value) || 0) / 100;
+    const pBonus = (parseFloat(document.getElementById('powerBonus').value) || 100) / 100;
+    const baseAdd = parseFloat(document.getElementById('baseAdd').value) || 0;
+
+    const baseBuff = 1 + (parseFloat(document.getElementById('baseBuff').value) || 0) / 100;
+    const baseEffectUp = 1 + (parseFloat(document.getElementById('baseEffectUp').value) || 0) / 100;
+    const damageEnhance = 1 + (parseFloat(document.getElementById('damageEnhance').value) || 0) / 100;
+
+    const rawPower = parseFloat(document.getElementById('power').value) || 0;
+    const finalPower = Math.ceil(rawPower * pBonus);
+
+    const isCritical = document.getElementById('isCritical').checked;
+    const critInput = parseFloat(document.getElementById('critical').value) || 0;
+    const criticalRate = isCritical ? (1 + critInput / 100) : 1.0;
+
+    let softeningInput = parseFloat(document.getElementById('softening').value) || 0;
+    let softVal = softeningInput > 3 ? 3 : softeningInput;
+    const softeningMultiplier = softVal > 0 ? (1 + 0.2 + 0.1 * softVal) : 1.0;
+
+    let languorInput = parseFloat(document.getElementById('languor').value) || 0;
+    let langVal = languorInput > 3 ? 3 : languorInput;
+    const languorMultiplier = langVal > 0 ? (1 - 0.1 - 0.05 * langVal) : 1.0;
+
+    const otherBuff = 1 + (parseFloat(document.getElementById('otherBuff').value) || 0) / 100;
+    const finalEffect = 1 + (parseFloat(document.getElementById('finalEffect').value) || 0) / 100;
+    const solidRate = (100 - (parseFloat(document.getElementById('solid').value) || 0)) / 100;
+
+    let log = [];
+
+    let rawBase = Math.ceil(atk * multiplier);
+    log.push(`【基礎値：乗算】 覚醒体の攻撃力 (${atk}) × 倍率 (${(multiplier*100).toFixed(0)}%) = ${rawBase} (切り上げ)`);
+
+    let baseDamage = rawBase + baseAdd;
+    if (baseAdd > 0) {
+        log.push(`【基礎値：加算】 前の値 (${rawBase}) + 基礎値への加算 (${baseAdd}) = ${baseDamage}`);
+    }
+
+    let step1 = Math.ceil(baseDamage * baseBuff);
+    log.push(`【ステップ1】 基礎値 (${baseDamage}) × 基礎値バフ (${(baseBuff*100-100).toFixed(0)}%) = ${step1} (切り上げ)`);
+
+    let step2 = Math.ceil(step1 * baseEffectUp);
+    log.push(`【ステップ2】 前の値 (${step1}) × 基礎効果の上昇 (${(baseEffectUp*100-100).toFixed(0)}%) = ${step2} (切り上げ)`);
+
+    let step3 = Math.ceil(step2 * damageEnhance);
+    log.push(`【ステップ3】 前の値 (${step2}) × ダメージ強化 (${(damageEnhance*100-100).toFixed(0)}%) = ${step3} (切り上げ)`);
+
+    let step4 = step3 + finalPower;
+    log.push(`【ステップ4】 前の値 (${step3}) + 力調整値 [${rawPower}×力ボーナス${(pBonus*100).toFixed(0)}%] (${finalPower}) = ${step4}`);
+
+    let step5 = Math.ceil(step4 * criticalRate);
+    if (isCritical) {
+        log.push(`【ステップ5】 前の値 (${step4}) × クリティカルダメージ補正 (+${critInput}% → ${(criticalRate*100).toFixed(0)}%) = ${step5} (切り上げ)`);
+    } else {
+        log.push(`【ステップ5】 クリティカル未発生 (× 1.0) = ${step5}`);
+    }
+
+    let step6 = Math.ceil(step5 * softeningMultiplier);
+    if (softeningInput > 0) {
+        let capMsg = softeningInput > 3 ? " (上限3制限)" : "";
+        log.push(`【ステップ6】 前の値 (${step5}) × 軟化補正${capMsg} [1+0.2+0.1×${softVal}] (${softeningMultiplier.toFixed(2)}倍) = ${step6} (切り上げ)`);
+    }
+
+    let step6_2 = Math.ceil(step6 * languorMultiplier);
+    if (languorInput > 0) {
+        let capMsg = languorInput > 3 ? " (上限3制限)" : "";
+        log.push(`【ステップ6-2】 前の値 (${step6}) × 倦怠補正${capMsg} [1-0.1-0.05×${langVal}] (${languorMultiplier.toFixed(2)}倍) = ${step6_2} (切り上げ)`);
+    } else {
+        step6_2 = step6;
+    }
+
+    let step7 = Math.ceil(step6_2 * otherBuff);
+    log.push(`【ステップ7】 前の値 (${step6_2}) × その他枠 (${(otherBuff*100-100).toFixed(0)}%) = ${step7} (切り上げ)`);
+
+    let step8 = Math.ceil(step7 * finalEffect);
+    log.push(`【ステップ8】 前の値 (${step7}) × 最終効果 (${(finalEffect*100-100).toFixed(0)}%) = ${step8} (切り上げ)`);
+
+    let finalDamage = Math.ceil(step8 * solidRate);
+    if (solidRate < 1.0) {
+        log.push(`【ステップ9: 堅固】 前の値 (${step8}) × 堅固補正 [100% - ${100 - solidRate*100}%] = ${finalDamage} (切り上げ)`);
+    }
+
+    if (finalDamage < 1) {
+        finalDamage = 1;
+        log.push(`【最小値保証】 計算結果が1未満のため、最終ダメージを 1 に補正しました。`);
+    }
+
+    document.getElementById('totalDamage').innerText = finalDamage.toLocaleString();
+
+    const logContainer = document.getElementById('processLog');
+    logContainer.innerHTML = '';
+    log.forEach(item => {
+        const div = document.createElement('div');
+        div.innerText = item;
+        logContainer.appendChild(div);
+    });
+}
+
+window.onload = function() {
+    initDatabaseOptions();
+    calculateDamage();
+};
+</script>
+
+</body>
+</html>
