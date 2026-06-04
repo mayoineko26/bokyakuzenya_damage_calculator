@@ -417,7 +417,8 @@ const CHARACTER_MASTER = [
             },
             { name: "永遠の幻影",
               description: "3凸効果は初期値バフに記入してください",
-              effects: [{ type: "other1", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [30, 36, 42, 48, 54, 60] }]
+              effects: [{ type: "tentacle", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [50, 50, 50, 50, 50, 50] },
+                        { type: "other1", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [30, 36, 42, 48, 54, 60] }]
             },
             { name: "不死の極楽鳥",
               description: "純白の目印は初期値への加算に記入してください",
