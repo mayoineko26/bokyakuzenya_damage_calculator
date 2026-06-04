@@ -370,6 +370,16 @@
             margin-bottom: 0;
         }
 
+        .card-guide {
+            background: var(--guide-bg);
+            border: 1px solid rgba(157, 78, 223, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+            margin-bottom: 32px;
+        }
+
+
         .history-section {
             background: var(--history-bg);
             border: 1px solid var(--border-color);
@@ -426,8 +436,8 @@
 
 <div class="container">
     <header>
-        <h1>忘却前夜 ダメージ・効果計算ツール v0.2</h1>
-        <p>触腕ダメージは不完全、キャラデータ入力中</p>
+        <h1>忘却前夜 ダメージ・効果計算ツール v0.3</h1>
+        <p>触腕ダメージは不完全</p>
     </header>
 
     <div class="content">
@@ -476,7 +486,7 @@
                         <select id="cardSelect" onchange="applyDatabaseValues();"></select>
                     </div>
                 </div>
-                <div class="input-group" style="grid-column: span 2;">
+                <div class="input-group">
                     <label for="skillSelect">スキルLv</label>
                     <div class="input-wrapper">
                         <select id="skillSelect" onchange="applyDatabaseValues();">
@@ -489,7 +499,33 @@
                         </select>
                     </div>
                 </div>
+                <!-- 幻夢の深奥・強化覚醒体設定 -->
+                <div class="input-group">
+                    <!--<input class="form-check-input ms-0 me-2" type="checkbox" id="isDeepPhantom" onchange="applyDatabaseValues();">-->
+                    <label class="form-check-label fw-bold text-primary" for="isDeepPhantom">
+                        <i class="bi bi-star-fill text-warning me-1"></i> 「幻夢の深奥」強化覚醒体指定
+                    </label>
+                    <div class="input-wrapper">
+                        <select id="isDeepPhantom" onchange="applyDatabaseValues();">
+                            <option value="0">適用しない</option>
+                            <option value="1">適用する</option>
+                        </select>
+                    </div>
+                </div>
             </div>
+            <!-- カード詳細説明スペース -->
+            <!--<div class="card mt-4 shadow-sm">-->
+            <div class="card-guide">
+                <div class="card-header bg-secondary text-white fw-bold">
+                    <i class="bi bi-info-circle-fill me-2"></i> 選択中スキルにおける計算上の注意
+                </div>
+                <div class="card-body bg-light">
+                    <div id="cardDescriptionArea" class="text-muted" style="white-space: pre-wrap; min-height: 50px;">
+                        ※ キャラクターとスキルを選択すると、ここに詳細な使い方や注意点が表示されます。
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <div class="section-title">計算する効果の選択</div>
@@ -519,7 +555,7 @@
                 <div id="awakenOverlayHint" style="font-size: 11px; color: #5cb85c; margin-top: 4px; display: none;"></div>
             </div>
             <div class="input-group">
-                <label for="powerBonus" id="powerBonusLabel">力ボーナス</label>
+                <label for="powerBonus" id="powerBonusLabel">力ボーナス（通常は100％）</label>
                 <div class="input-wrapper">
                     <input type="number" id="powerBonus" value="100" step="1" oninput="calculateDamage()">
                     <span class="unit">%</span>
@@ -688,6 +724,7 @@
                 更新履歴
             </div>
             <ul class="history-list">
+              <li><span class="history-date">v0.3:覚醒体データから選択する機能の完成、幻夢の深奥の強化覚醒体指定に対応</span></li>
               <li><span class="history-date">v0.2:ダメージ以外に対応（触腕ダメージは不完全）、複数回ダメージに対して単発と合計のダメージを表示するように変更</span></li>
               <li><span class="history-date">v0.1:軟化、倦怠の計算式を修正</span></li>
               <li><span class="history-date">v0:ベータ版公開</span></li>
@@ -831,23 +868,23 @@ function handleEffectTypeChange() {
     if (isTentacle) {
         statLabel.innerText = "覚醒体のATK (触腕時は適用外)";
         powerLabel.innerText = "(D) 力 (触腕時は適用外)";
-        powerBonusLabel.innerText = "力ボーナス";
+        powerBonusLabel.innerText = "力ボーナス（通常は100％）";
     } else if (effectType === 'damage') {
         statLabel.innerText = "覚醒体のATK（もしくは参照するステータス）";
         powerLabel.innerText = "(D) 力";
-        powerBonusLabel.innerText = "力ボーナス";
+        powerBonusLabel.innerText = "力ボーナス（通常は100％）";
     } else if (effectType === 'shield') {
         statLabel.innerText = "覚醒体のDEF（もしくは参照するステータス）";
         powerLabel.innerText = "(D) 警戒";
-        powerBonusLabel.innerText = "警戒ボーナス"; // ★ここを動的に変更
+        powerBonusLabel.innerText = "警戒ボーナス（通常は100％）"; // ★ここを動的に変更
     } else if (effectType === 'heal') {
         statLabel.innerText = "覚醒体のCON（もしくは参照するステータス）";
         powerLabel.innerText = "(D) 固定値変動";
-        powerBonusLabel.innerText = "固定値ボーナス";
+        powerBonusLabel.innerText = "固定値ボーナス（通常は100％）";
     } else {
         statLabel.innerText = "参照するステータス初期値";
         powerLabel.innerText = "(D) 固定値変動";
-        powerBonusLabel.innerText = "固定値ボーナス";
+        powerBonusLabel.innerText = "固定値ボーナス（通常は100％）";
     }
 
     const mode = document.querySelector('input[name="inputMode"]:checked').value;
@@ -875,8 +912,30 @@ function handleEffectTypeChange() {
             const currentEff = cardData.effects.find(e => e.type === effectType);
             if (currentEff) {
                 const activeHits = currentEff.hits !== undefined ? currentEff.hits : (cardData.hits !== undefined ? cardData.hits : 1);
-                const activePowerBonus = currentEff.powerBonus !== undefined ? currentEff.powerBonus : (cardData.powerBonus !== undefined ? cardData.powerBonus : 100);
-                const activeTentacleBonus = currentEff.tentacleBonus !== undefined ? currentEff.tentacleBonus : 0;
+//                const activePowerBonus = currentEff.powerBonus !== undefined ? currentEff.powerBonus : (cardData.powerBonus !== undefined ? cardData.powerBonus : 100);
+//                const activeTentacleBonus = currentEff.tentacleBonus !== undefined ? currentEff.tentacleBonus : 0;
+
+                let activePowerBonus = 100; // デフォルト値
+                if (currentEff.powerBonus !== undefined) {
+                    if (Array.isArray(currentEff.powerBonus)) {
+                        const maxIdx = currentEff.powerBonus.length - 1;
+                        const safeIdx = Math.min(skillLv-1, maxIdx);
+                        activePowerBonus = currentEff.powerBonus[safeIdx];
+                    } else {
+                        activePowerBonus = currentEff.powerBonus;
+                    }
+                }
+
+                let activeTentacleBonus = 0; // デフォルト値
+                if (currentEff.tentacleBonus !== undefined) {
+                    if (Array.isArray(currentEff.tentacleBonus)) {
+                        const maxIdx = currentEff.tentacleBonus.length - 1;
+                        const safeIdx = Math.min(skillLv-1, maxIdx);
+                        activeTentacleBonus = currentEff.tentacleBonus[safeIdx];
+                    } else {
+                        activeTentacleBonus = currentEff.tentacleBonus;
+                    }
+                }
 
                 document.getElementById('attackCount').value = activeHits;
                 if (!isTentacle) document.getElementById('powerBonus').value = activePowerBonus;
@@ -890,6 +949,7 @@ function handleEffectTypeChange() {
                 const isLimited = (char.type === "limited");
                 const levelModifier = isLimited ? 30 : 20;
                 const typeLabel = isLimited ? "限定" : "恒常";
+                const isDeepPhantom = parseInt(document.getElementById('isDeepPhantom').value);
 
                 if (isTentacle) {
                     baseStatValue = 0;
@@ -897,17 +957,33 @@ function handleEffectTypeChange() {
                 } else if (currentEff.stat === 'hp') {
                     baseStatValue = Math.ceil(char.baseHp * (level + levelModifier) / 100);
                     formulaText = `${typeLabel}CON式: 基礎${char.baseHp} × (${level} + ${levelModifier}) / 100 = ${baseStatValue}`;
+                    if (isDeepPhantom === 1) {
+                        formulaText += `\n強化覚醒体: ${baseStatValue} `;
+                        baseStatValue = Math.ceil(baseStatValue * 1.5);
+                        formulaText += `× 1.5 = ${baseStatValue}`;
+                    }
                 } else if (currentEff.stat === 'def') {
                     baseStatValue = Math.ceil(char.baseDef * (level + levelModifier) / 100);
                     formulaText = `${typeLabel}DEF式: 基礎${char.baseDef} × (${level} + ${levelModifier}) / 100 = ${baseStatValue}`;
+                    if (isDeepPhantom === 1) {
+                        formulaText += `\n強化覚醒体: ${baseStatValue} `;
+                        baseStatValue = Math.ceil(baseStatValue * 1.5);
+                        formulaText += `× 1.5 = ${baseStatValue}`;
+                    }
                 } else {
                     baseStatValue = Math.ceil(char.baseAtk * (level + levelModifier) / 100);
                     formulaText = `${typeLabel}ATK式: 基礎${char.baseAtk} × (${level} + ${levelModifier}) / 100 = ${baseStatValue}`;
+                    if (isDeepPhantom === 1) {
+                        formulaText += `\n強化覚醒体: ${baseStatValue} `;
+                        baseStatValue = Math.ceil(baseStatValue * 1.5);
+                        formulaText += `× 1.5 = ${baseStatValue}`;
+                    }
                 }
 
                 if (!isTentacle) {
                     atkInput.disabled = true;
                     atkInput.value = baseStatValue;
+                    document.getElementById('multiplier').disabled = true;
                 } else {
                     atkInput.value = 0;
                 }
@@ -915,7 +991,10 @@ function handleEffectTypeChange() {
             }
         }
     } else {
-        if (!isTentacle) atkInput.disabled = false;
+        if (!isTentacle) {
+            atkInput.disabled = false;
+            document.getElementById('multiplier').disabled = false;
+        }
     }
 
     calculateDamage();
@@ -1006,6 +1085,15 @@ function applyDatabaseValues() {
 
     const availableTypes = card.effects.map(e => e.type);
     rebuildEffectTypeSelect(availableTypes);
+
+    const descriptionArea = document.getElementById('cardDescriptionArea');
+    if (card.description) {
+        // データに説明文がある場合はそれを表示
+        descriptionArea.innerHTML = `<span class="text-dark">${card.description}</span>`;
+    } else {
+        // 説明文がない、またはデフォルト状態の表示
+        descriptionArea.innerHTML = `<span class="text-muted">特にありません。</span>`;
+    }
 }
 
 // ==========================================
