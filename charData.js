@@ -676,9 +676,9 @@ const CHARACTER_MASTER = [
               effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
             { name: "信仰の岐路",
-              description: "未対応、倍率分かる人がいたら教えてください",
-              effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [0, 0, 0, 0, 0, 0] },
-                        { type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [0, 0, 0, 0, 0, 0] }]
+              description: "派生カードのため倍率は不正確かもしれません",
+              effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [20, 24, 28, 32, 36, 40] },
+                        { type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [2, 2.4, 2.8, 3.2, 3.6, 4] }]
             },
             { name: "至高の生贄",
               description: "力の獲得量はその他バフ・デバフ１から計算できます",
@@ -1206,17 +1206,17 @@ const CHARACTER_MASTER = [
             { name: "根源の海",
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [60, 72, 84, 96, 108, 120] }]
             },
-            { name: "千変万化・",
+            { name: "千変万化・瘴",
               description: "派生カードなので倍率は要検証",
-              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [50, 60, 70, 80, 90, 100] }]
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [70, 84, 98, 112, 126, 140] }]
             },
-            { name: "千変万化・",
+            { name: "千変万化・鏡",
               description: "派生カードなので倍率は要検証",
-              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [50, 60, 70, 80, 90, 100] }]
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [100, 120, 140, 160, 180, 200] }]
             },
-            { name: "千変万化・",
+            { name: "千変万化・鎌",
               description: "派生カードなので倍率は要検証",
-              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [50, 60, 70, 80, 90, 100] }]
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [280, 336, 392, 448, 504, 560] }]
             }
         ]
     },
