@@ -402,6 +402,28 @@ const CHARACTER_MASTER = [
         ]
     },
     {
+        name: "タヴィ",
+        baseAtk: 150, baseHp: 150, baseDef: 150, type: "limited",
+        cards: [
+            { name: "攻撃",
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
+            },
+            { name: "防御",
+              effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
+            },
+            { name: "双翼の羽ばたき",
+              effects: [{ type: "damage", stat: "atk", hits: 2, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
+            },
+            { name: "四翼の芽生え",
+              effects: [{ type: "damage", stat: "atk", hits: 4, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
+            },
+            { name: "六翼の解放",
+              description: "1凸効果によるシールド獲得量の計算は未対応のため、手動入力に移行してください",
+              effects: [{ type: "damage", stat: "atk", hits: 6, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
+            }
+        ]
+    },
+    {
         name: "シレスト",
         baseAtk: 95, baseHp: 100, baseDef: 100, type: "standard",
         cards: [
@@ -741,11 +763,11 @@ const CHARACTER_MASTER = [
             },
             { name: "血と砂の賛歌",
               description: "3凸効果は初期値バフに記入してください",
-              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 555, tentacleBonus: 0, skills: [100, 120, 140, 160, 180, 200] }]
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 500, tentacleBonus: 0, skills: [100, 120, 140, 160, 180, 200] }]
             },
             { name: "血の贈り物（極限解放）",
               description: "3凸効果は初期値バフに記入してください",
-              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 555, tentacleBonus: 0, skills: [100, 120, 140, 160, 180, 200] }]
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 500, tentacleBonus: 0, skills: [100, 120, 140, 160, 180, 200] }]
             }
         ]
     },
@@ -904,7 +926,7 @@ const CHARACTER_MASTER = [
               effects: [{ type: "other1", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [20, 24, 28, 32, 36, 40] }]
             },
             { name: "苦痛の解消",
-              description: "3凸効果は浄化効果は初期値バフに記入してください、献身による深紅の炉の獲得量はその他バフ・デバフ１から計算できます",
+              description: "3凸効果や浄化効果は初期値バフに記入してください（要検証）、献身による深紅の炉の獲得量はその他バフ・デバフ１から計算できます",
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [30, 36, 42, 48, 54, 60] },
                         { type: "other1", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
@@ -1265,13 +1287,23 @@ const CHARACTER_MASTER = [
         name: "オルラ",
         baseAtk: 120, baseHp: 115, baseDef: 105, type: "limited",
         cards: [
-            { name: "攻撃",
-              description: "3凸効果は初期値バフに記入してください（100％）",
-              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
+            { name: "狂想の詩篇",
+              description: "3凸効果は倍率に反映しています（要検証）",
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }],
+              awakenOverrides: {
+                    3: {
+                        effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [20, 24, 28, 32, 36, 40] }]
+                    }
+                }
             },
-            { name: "防御",
-              description: "3凸効果は初期値バフに記入してください（100％）",
-              effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
+            { name: "哀悼の詩篇",
+              description: "3凸効果は倍率に反映しています（要検証）",
+              effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }],
+              awakenOverrides: {
+                    3: {
+                        effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [20, 24, 28, 32, 36, 40] }]
+                    }
+                }
             },
             { name: "華やかな章",
               description: "1凸効果は初期値バフに記入してください",
