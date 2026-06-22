@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>忘却前夜 ダメージ・効果計算ツール v0.3</title>
+    <title>忘却前夜 ダメージ・効果計算ツール v0.3.1</title>
 
     <script src="charData.js"></script>
 
@@ -464,7 +464,7 @@
                 <div class="input-group">
                     <label for="charLevelInput">覚醒体Lv</label>
                     <div class="input-wrapper">
-                        <input type="number" id="charLevelInput" value="1" min="1" max="100" step="1" oninput="applyDatabaseValues();">
+                        <input type="number" id="charLevelInput" value="60" min="1" max="100" step="1" oninput="applyDatabaseValues();">
                         <span class="unit">Lv</span>
                     </div>
                 </div>
@@ -724,6 +724,7 @@
                 更新履歴
             </div>
             <ul class="history-list">
+              <li><span class="history-date">v0.3.1:タヴィのデータを追加と覚醒体データの間違いをいくつか修正</span></li>
               <li><span class="history-date">v0.3:覚醒体データから選択する機能の完成、幻夢の深奥の強化覚醒体指定に対応</span></li>
               <li><span class="history-date">v0.2:ダメージ以外に対応（触腕ダメージは不完全）、複数回ダメージに対して単発と合計のダメージを表示するように変更</span></li>
               <li><span class="history-date">v0.1:軟化、倦怠の計算式を修正</span></li>
