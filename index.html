@@ -212,7 +212,7 @@
             box-shadow: 0 0 0 2px rgba(157, 78, 223, 0.2);
         }
 
-        .input-wrapper input:disabled, .input-wrapper select:disabled, .checkbox-wrapper.disabled {
+        .input-wrapper input:disabled, .input-wrapper select:disabled, .checkbox-wrapper.disabled, .input-group input:disabled {
             background: #161822;
             color: #62677b;
             border-color: #242736;
@@ -436,7 +436,7 @@
 
 <div class="container">
     <header>
-        <h1>忘却前夜 ダメージ・効果計算ツール v0.3</h1>
+        <h1>忘却前夜 ダメージ・効果計算ツール v0.4</h1>
         <p>触腕ダメージは不完全</p>
     </header>
 
@@ -466,6 +466,12 @@
                     <div class="input-wrapper">
                         <input type="number" id="charLevelInput" value="60" min="1" max="100" step="1" oninput="applyDatabaseValues();">
                         <span class="unit">Lv</span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="gnosticPotentialInput">内在霊格</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="gnosticPotentialInput" value="0" min="0" max="5" step="1" oninput="applyDatabaseValues();">
                     </div>
                 </div>
                 <div class="input-group">
@@ -630,6 +636,14 @@
                 </div>
             </div>
 
+            <div class="input-group">
+                <label for="specialBuff">(S1) 特別枠（ヘロット極限枠）</label>
+                <div class="input-wrapper">
+                    <input type="number" id="specialBuff" value="0" step="1" oninput="calculateDamage()">
+                    <span class="unit">%</span>
+                </div>
+            </div>
+
             <div class="input-group" id="criticalGroup">
                 <label>(E) クリティカルダメージ</label>
                 <label class="checkbox-wrapper" id="critCheckboxWrapper">
@@ -643,7 +657,7 @@
             </div>
 
             <div class="input-group">
-                <label for="otherBuff">(F) その他枠（基本値）</label>
+                <label for="otherBuff">(F) その他枠（すべての〇〇枠）</label>
                 <div class="input-wrapper">
                     <input type="number" id="otherBuff" value="0" step="1" oninput="calculateDamage()">
                     <span class="unit">%</span>
@@ -724,6 +738,7 @@
                 更新履歴
             </div>
             <ul class="history-list">
+              <li><span class="history-date">v0.4:溶壊ドールのデータを追加、内在霊格と固定ダメージに対応、ヘロット極限によるバフの計算式の修正と記入欄の追加</span></li>
               <li><span class="history-date">v0.3.1:タヴィのデータを追加と覚醒体データの間違いをいくつか修正</span></li>
               <li><span class="history-date">v0.3:覚醒体データから選択する機能の完成、幻夢の深奥の強化覚醒体指定に対応</span></li>
               <li><span class="history-date">v0.2:ダメージ以外に対応（触腕ダメージは不完全）、複数回ダメージに対して単発と合計のダメージを表示するように変更</span></li>
@@ -748,9 +763,10 @@ const ALL_EFFECT_TYPES = [
     { value: "heal", text: "3. 回復" },
     { value: "poison", text: "4. 固定毒・反撃" },
     { value: "tentacle", text: "5. 触腕ダメージ" },
-    { value: "other1", text: "6. その他バフ・デバフ1" },
-    { value: "other2", text: "7. その他バフ・デバフ2" },
-    { value: "other3", text: "8. その他バフ・デバフ3" }
+    { value: "fixdamage", text: "6. 固定ダメージ" },
+    { value: "other1", text: "7. その他バフ・デバフ1" },
+    { value: "other2", text: "8. その他バフ・デバフ2" },
+    { value: "other3", text: "9. その他バフ・デバフ3" }
 ];
 
 // ★ CHARACTER_MASTER 配列は外部の charData.js からロードされるため、ここには記述しません。
@@ -850,12 +866,20 @@ function handleEffectTypeChange() {
         isCriticalCheckbox.disabled = true;
         criticalInput.disabled = true;
         critWrapper.classList.add('disabled');
+    } else if (effectType === 'fixdamage') {
+        damageEnhanceInput.disabled = true;
+        isCriticalCheckbox.disabled = true;
+        criticalInput.disabled = true;
+        critWrapper.classList.add('disabled');
     }
 
     if (!isDamageOrTentacle) {
         softeningInput.disabled = true;
         languorInput.disabled = true;
         solidInput.disabled = true;
+    }
+    if (effectType === 'fixdamage') {
+        solidInput.disabled = false;
     }
 
     if (effectType !== 'shield') {
@@ -882,6 +906,10 @@ function handleEffectTypeChange() {
         statLabel.innerText = "覚醒体のCON（もしくは参照するステータス）";
         powerLabel.innerText = "(D) 固定値変動";
         powerBonusLabel.innerText = "固定値ボーナス（通常は100％）";
+    } else if (effectType === 'damage') {
+        statLabel.innerText = "覚醒体のATK（もしくは参照するステータス）";
+        powerLabel.innerText = "(D) 固定値変動";
+        powerBonusLabel.innerText = "固定値ボーナス（通常は100％）";
     } else {
         statLabel.innerText = "参照するステータス初期値";
         powerLabel.innerText = "(D) 固定値変動";
@@ -896,6 +924,15 @@ function handleEffectTypeChange() {
         const skillLv = parseInt(document.getElementById('skillSelect').value) || 1;
         const char = CHARACTER_MASTER[charIndex];
 
+        //内在霊格の自動変更
+        const gpInput = document.getElementById('gnosticPotentialInput');
+        if (char.type === "limited") {
+            gpInput.value = 5;
+            gpInput.disabled = true;
+        } else {
+            gpInput.value = 0;
+            gpInput.disabled = false;
+        }
         if (char && char.cards && char.cards[cardIndex]) {
             let cardData = char.cards[cardIndex];
 
@@ -944,6 +981,7 @@ function handleEffectTypeChange() {
                 document.getElementById('multiplier').value = currentEff.skills[skillLv - 1] || 0;
 
                 let level = parseInt(document.getElementById('charLevelInput').value) || 1;
+                let gpotential = parseInt(document.getElementById('gnosticPotentialInput').value) || 0;
                 let baseStatValue = 100;
                 let formulaText = "";
 
@@ -956,24 +994,24 @@ function handleEffectTypeChange() {
                     baseStatValue = 0;
                     formulaText = "触腕ダメージは1.1サブカテゴリ内の手動計算値を優先します";
                 } else if (currentEff.stat === 'hp') {
-                    baseStatValue = Math.ceil(char.baseHp * (level + levelModifier) / 100);
-                    formulaText = `${typeLabel}CON式: 基礎${char.baseHp} × (${level} + ${levelModifier}) / 100 = ${baseStatValue}`;
+                    baseStatValue = Math.ceil(char.baseHp * (level + gpotential * 2 + levelModifier) / 100);
+                    formulaText = `${typeLabel}CON式: 基礎${char.baseHp} × (${level} + ${gpotential} × 2 + ${levelModifier}) / 100 = ${baseStatValue}`;
                     if (isDeepPhantom === 1) {
                         formulaText += `\n強化覚醒体: ${baseStatValue} `;
                         baseStatValue = Math.ceil(baseStatValue * 1.5);
                         formulaText += `× 1.5 = ${baseStatValue}`;
                     }
                 } else if (currentEff.stat === 'def') {
-                    baseStatValue = Math.ceil(char.baseDef * (level + levelModifier) / 100);
-                    formulaText = `${typeLabel}DEF式: 基礎${char.baseDef} × (${level} + ${levelModifier}) / 100 = ${baseStatValue}`;
+                    baseStatValue = Math.ceil(char.baseDef * (level + gpotential * 2 + levelModifier) / 100);
+                    formulaText = `${typeLabel}DEF式: 基礎${char.baseDef} × (${level} + ${gpotential} × 2 + ${levelModifier}) / 100 = ${baseStatValue}`;
                     if (isDeepPhantom === 1) {
                         formulaText += `\n強化覚醒体: ${baseStatValue} `;
                         baseStatValue = Math.ceil(baseStatValue * 1.5);
                         formulaText += `× 1.5 = ${baseStatValue}`;
                     }
                 } else {
-                    baseStatValue = Math.ceil(char.baseAtk * (level + levelModifier) / 100);
-                    formulaText = `${typeLabel}ATK式: 基礎${char.baseAtk} × (${level} + ${levelModifier}) / 100 = ${baseStatValue}`;
+                    baseStatValue = Math.ceil(char.baseAtk * (level + gpotential * 2 + levelModifier) / 100);
+                    formulaText = `${typeLabel}ATK式: 基礎${char.baseAtk} × (${level} + ${gpotential} × 2 + ${levelModifier}) / 100 = ${baseStatValue}`;
                     if (isDeepPhantom === 1) {
                         formulaText += `\n強化覚醒体: ${baseStatValue} `;
                         baseStatValue = Math.ceil(baseStatValue * 1.5);
@@ -1126,6 +1164,9 @@ function calculateDamage() {
     } else if (effectType === 'poison') {
         effectLabelName = "毒・反撃効果値";
         dParamName = "固定値変動";
+    } else if (effectType === 'fixdamage') {
+        effectLabelName = "固定ダメージ";
+        dParamName = "固定値変動";
     } else if (isOther) {
         effectLabelName = "バフ・デバフ効果値";
         dParamName = "固定値変動";
@@ -1198,6 +1239,9 @@ function calculateDamage() {
         else if (effectiveSeriousVal === 3) seriousSubPercent = 25;
     }
 
+    const specialBuffInput = parseFloat(document.getElementById('specialBuff').value) || 0;
+    const specialMultiplier = 1 + (specialBuffInput / 100);
+
     const otherBuffInput = parseFloat(document.getElementById('otherBuff').value) || 0;
     const totalOtherPercent = otherBuffInput + softAddPercent - langSubPercent - oppSubPercent - seriousSubPercent;
     const totalOtherMultiplier = 1 + (totalOtherPercent / 100);
@@ -1206,7 +1250,7 @@ function calculateDamage() {
 
     let solidRate = 1.0;
     let solidValue = 0;
-    if (isDamageOrTentacle) {
+    if (isDamageOrTentacle || (effectType === 'fixdamage')) {
         solidValue = parseFloat(document.getElementById('solid').value) || 0;
         solidRate = (100 - solidValue) / 100;
     }
@@ -1247,14 +1291,32 @@ function calculateDamage() {
             log.push(`【(C) ダメージ強化】 対象外のためスキップ = ${step3}`);
         }
 
-        let step4 = step3 + finalPowerTotal;
-        if (tentacleBonus > 0) {
-            log.push(`【(D) ${dParamName}】 前の値 (${step3}) + 合計調整値 (${finalPowerTotal}) [内訳：本来の力(${powerFromStat}) ＋ 触腕ボーナス(${powerFromTentacleBonus})] = ${step4}`);
+        if (specialMultiplier > 0) {
+            if (tentacleBonus > 0) {
+                let step4a = step3 + powerFromTentacleBonus;
+                log.push(`【(D1) 触腕ボーナス】 前の値 (${step3}) ＋ 触腕ボーナス(${powerFromTentacleBonus}) = ${step4a}`);
+                let step4b = Math.ceil(step4a * specialMultiplier);
+                log.push(`【(S1) 特別枠】 前の値 (${step4a}) × バフ倍率 (${(specialMultiplier*100-100).toFixed(0)}%) = ${step4b}`);
+                let step4 = step4b + powerFromStat;
+                log.push(`【(D2) ${dParamName}】 前の値 (${step4b}) + ${dParamName}調整値 (${powerFromStat}) = ${step4}`);
+                currentBeforeCritValue = step4;
+            } else {
+                let step4b = Math.ceil(step3 * specialMultiplier);
+                log.push(`【(S1) 特別枠】 前の値 (${step3}) × バフ倍率 (${(specialMultiplier*100-100).toFixed(0)}%) = ${step4b}`);
+                let step4 = step4b + powerFromStat;
+                log.push(`【(D) ${dParamName}】 前の値 (${step4b}) + ${dParamName}調整値 (${powerFromStat}) = ${step4}`);
+                currentBeforeCritValue = step4;
+            }
         } else {
-            log.push(`【(D) ${dParamName}】 前の値 (${step3}) + ${dParamName}調整値 (${powerFromStat}) = ${step4}`);
+            let step4 = step3 + finalPowerTotal;
+            if (tentacleBonus > 0) {
+                log.push(`【(D) ${dParamName}】 前の値 (${step3}) + 合計調整値 (${finalPowerTotal}) [内訳：本来の力(${powerFromStat}) ＋ 触腕ボーナス(${powerFromTentacleBonus})] = ${step4}`);
+            } else {
+                log.push(`【(D) ${dParamName}】 前の値 (${step3}) + ${dParamName}調整値 (${powerFromStat}) = ${step4}`);
+            }
+            currentBeforeCritValue = step4;
         }
 
-        currentBeforeCritValue = step4;
     }
 
     let step5 = Math.ceil(currentBeforeCritValue * criticalRate);

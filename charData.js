@@ -112,7 +112,7 @@ const CHARACTER_MASTER = [
     },
     {
         name: "ドール",
-        baseAtk: 90, baseHp: 110, baseDef: 120, type: "standard",
+        baseAtk: 90, baseHp: 120, baseDef: 125, type: "standard",
         cards: [
             { name: "攻撃",
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
@@ -420,6 +420,41 @@ const CHARACTER_MASTER = [
             { name: "六翼の解放",
               description: "1凸効果によるシールド獲得量の計算は未対応のため、手動入力に移行してください",
               effects: [{ type: "damage", stat: "atk", hits: 6, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
+            }
+        ]
+    },
+    {
+        name: "溶壊・ドール",
+        baseAtk: 125, baseHp: 110, baseDef: 120, type: "limited",
+        cards: [
+            { name: "攻撃",
+              description: "2凸効果の計算は実装していません。狂気解放のダメージから計算してください",
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
+            },
+            { name: "防御",
+              effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
+            },
+            { name: "自滅改造",
+              effects: [{ type: "heal", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [30, 36, 42, 48, 54, 60] },
+                        { type: "poison", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [120, 144, 168, 192, 216, 240] }]
+            },
+            { name: "宿命崩壊",
+              effects: [{ type: "heal", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [20, 24, 28, 32, 36, 40] },
+                        { type: "poison", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [80, 96, 112, 128, 144, 160] }],
+              awakenOverrides: {
+                    3: {
+                        effects: [{ type: "heal", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [30, 36, 42, 48, 54, 60] },
+                                  { type: "poison", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [120, 144, 168, 192, 216, 240] }]
+                    }
+                }
+            },
+            { name: "終点、真理と深淵の扉",
+              effects: [{ type: "heal", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [35, 42, 49, 56, 63, 70] },
+                        { type: "fixdamage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [540, 1080, 1620, 2160, 2700, 3240] }],
+            },
+            { name: "狂乱感染（極限解放）",
+              effects: [{ type: "heal", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [35, 42, 49, 56, 63, 70] },
+                        { type: "fixdamage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [540, 1080, 1620, 2160, 2700, 3240] }],
             }
         ]
     },
