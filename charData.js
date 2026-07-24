@@ -1044,7 +1044,7 @@ const CHARACTER_MASTER = [
             },
             { name: "血脂爛漫",
               description: "1凸効果は初期値バフに記入してください、3凸効果は固定値の加算に記入してください（要検証）",
-              effects: [{ type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [50, 60, 70, 80, 90, 100] }]
+              effects: [{ type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [50, 100, 150, 200, 250, 300] }]
             },
             { name: "沙耶の唄",
               description: "1凸効果は初期値バフに記入してください",
