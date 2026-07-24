@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>忘却前夜 ダメージ・効果計算ツール v0.4</title>
+    <title>忘却前夜 ダメージ・効果計算ツール v0.4.1</title>
 
     <script src="charData.js"></script>
 
@@ -436,7 +436,7 @@
 
 <div class="container">
     <header>
-        <h1>忘却前夜 ダメージ・効果計算ツール v0.4</h1>
+        <h1>忘却前夜 ダメージ・効果計算ツール v0.4.1</h1>
         <p>触腕ダメージは不完全</p>
     </header>
 
@@ -472,6 +472,12 @@
                     <label for="gnosticPotentialInput">内在霊格</label>
                     <div class="input-wrapper">
                         <input type="number" id="gnosticPotentialInput" value="0" min="0" max="5" step="1" oninput="applyDatabaseValues();">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="soulforgeAptitudeInput">霊識適性（星辰編ステージのみ）</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="soulforgeAptitudeInput" value="0" min="0" max="5" step="1" oninput="applyDatabaseValues();">
                     </div>
                 </div>
                 <div class="input-group">
@@ -725,9 +731,10 @@
                 <p>忘却前夜のダメージ（など全ての効果の）計算ツールです。参照するステータスとスキルごとの倍率などの直接入力のほか、覚醒体とスキルを選択することで一部自動入力できるようになっています（カード効果の仕様を調査中のものもあります）。</p>
                 <p>計算式は公式Discordにてライムさんに教えていただいたものを元にしております。この場をお借りして感謝します。</p>
                 <p>同名のバフがある場合、全ての数値を足したものを記入してください。また、〇〇の基礎効果とあるものは〇〇のものにしか適用されないことに注意してください。</p>
-                <p>初期値バフは1凸or3凸効果などが該当します（基礎効果と紛らわしいので注意）。</p>
-                <p>初期値への加算はアルバの「心眼の刃」やサンガーの「失われた芸術」が該当するはずです。</p>
+                <p>初期値バフは1凸or3凸効果などが該当します（要検証、基礎効果と紛らわしいので注意）。</p>
+                <p>初期値への加算はアルバの「心眼の刃」やサンガーの「失われた芸術」が該当します。</p>
                 <p>その他バフ・デバフは力の増加・減少、浸食などを想定しています。</p>
+                <p>幻夢の深奥の強化覚醒体指定と霊識適性は同時には適用されません。</p>                
                 <p>触腕ダメージの計算式は未解明のため、現在はゲームの表示上で見えている触腕ダメージの値を入力することで、そのあとのダメージ計算を行えるようにしています。（計算式を正確に理解できているか怪しいため、間違いがあるかもしれません。）</p>
             </div>
         </div>
@@ -738,6 +745,7 @@
                 更新履歴
             </div>
             <ul class="history-list">
+              <li><span class="history-date">v0.4.1:霊識適性を追加、沙耶の性能調整と限定キャラの内在霊格の修正に対応</span></li>
               <li><span class="history-date">v0.4:溶壊ドールのデータを追加、通常ドールのステータス変更に対応、内在霊格と固定ダメージに対応、ヘロット極限によるバフの計算式の修正と記入欄の追加</span></li>
               <li><span class="history-date">v0.3.1:タヴィのデータを追加と覚醒体データの間違いをいくつか修正</span></li>
               <li><span class="history-date">v0.3:覚醒体データから選択する機能の完成、幻夢の深奥の強化覚醒体指定に対応</span></li>
@@ -982,11 +990,14 @@ function handleEffectTypeChange() {
 
                 let level = parseInt(document.getElementById('charLevelInput').value) || 1;
                 let gpotential = parseInt(document.getElementById('gnosticPotentialInput').value) || 0;
+                let soulforge = parseInt(document.getElementById('soulforgeAptitudeInput').value) || 0;
                 let baseStatValue = 100;
                 let formulaText = "";
 
+                const soulforgeMultiplier = 1 + soulforge * 3 / 100;
                 const isLimited = (char.type === "limited");
-                const levelModifier = isLimited ? 30 : 20;
+                //const levelModifier = isLimited ? 30 : 20;
+                const levelModifier = 20;
                 const typeLabel = isLimited ? "限定" : "恒常";
                 const isDeepPhantom = parseInt(document.getElementById('isDeepPhantom').value);
 
@@ -995,27 +1006,39 @@ function handleEffectTypeChange() {
                     formulaText = "触腕ダメージは1.1サブカテゴリ内の手動計算値を優先します";
                 } else if (currentEff.stat === 'hp') {
                     baseStatValue = Math.ceil(char.baseHp * (level + gpotential * 2 + levelModifier) / 100);
-                    formulaText = `${typeLabel}CON式: 基礎${char.baseHp} × (${level} + ${gpotential} × 2 + ${levelModifier}) / 100 = ${baseStatValue}`;
+                    formulaText = `CON式: 基礎${char.baseHp} × (${level} + ${gpotential} × 2 + ${levelModifier}) / 100 = ${baseStatValue}`;
                     if (isDeepPhantom === 1) {
                         formulaText += `\n強化覚醒体: ${baseStatValue} `;
                         baseStatValue = Math.ceil(baseStatValue * 1.5);
                         formulaText += `× 1.5 = ${baseStatValue}`;
+                    } else if (soulforge > 0) {
+                        formulaText += `\n霊識適性: ${baseStatValue} `;
+                        baseStatValue = Math.ceil(baseStatValue * soulforgeMultiplier);
+                        formulaText += `× (100 + 3 × ${soulforge}) / 100 = ${baseStatValue}`;
                     }
                 } else if (currentEff.stat === 'def') {
                     baseStatValue = Math.ceil(char.baseDef * (level + gpotential * 2 + levelModifier) / 100);
-                    formulaText = `${typeLabel}DEF式: 基礎${char.baseDef} × (${level} + ${gpotential} × 2 + ${levelModifier}) / 100 = ${baseStatValue}`;
+                    formulaText = `DEF式: 基礎${char.baseDef} × (${level} + ${gpotential} × 2 + ${levelModifier}) / 100 = ${baseStatValue}`;
                     if (isDeepPhantom === 1) {
                         formulaText += `\n強化覚醒体: ${baseStatValue} `;
                         baseStatValue = Math.ceil(baseStatValue * 1.5);
                         formulaText += `× 1.5 = ${baseStatValue}`;
+                    } else if (soulforge > 0) {
+                        formulaText += `\n霊識適性: ${baseStatValue} `;
+                        baseStatValue = Math.ceil(baseStatValue * soulforgeMultiplier);
+                        formulaText += `× (100 + 3 × ${soulforge}) / 100 = ${baseStatValue}`;
                     }
                 } else {
                     baseStatValue = Math.ceil(char.baseAtk * (level + gpotential * 2 + levelModifier) / 100);
-                    formulaText = `${typeLabel}ATK式: 基礎${char.baseAtk} × (${level} + ${gpotential} × 2 + ${levelModifier}) / 100 = ${baseStatValue}`;
+                    formulaText = `ATK式: 基礎${char.baseAtk} × (${level} + ${gpotential} × 2 + ${levelModifier}) / 100 = ${baseStatValue}`;
                     if (isDeepPhantom === 1) {
                         formulaText += `\n強化覚醒体: ${baseStatValue} `;
                         baseStatValue = Math.ceil(baseStatValue * 1.5);
                         formulaText += `× 1.5 = ${baseStatValue}`;
+                    } else if (soulforge > 0) {
+                        formulaText += `\n霊識適性: ${baseStatValue} `;
+                        baseStatValue = Math.ceil(baseStatValue * soulforgeMultiplier);
+                        formulaText += `× (100 + 3 × ${soulforge}) / 100 = ${baseStatValue}`;
                     }
                 }
 
