@@ -185,6 +185,7 @@ const CHARACTER_MASTER = [
               effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
             { name: "高温注意",
+              description: "次元影像の効果は初期値バフに記入してください",
               effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [20, 24, 28, 32, 36, 40] },
                         { type: "poison", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [15, 18, 21, 24, 27, 30] }]
             },
@@ -217,6 +218,7 @@ const CHARACTER_MASTER = [
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [12, 14.4, 16.8, 19.2, 21.6, 24] }]
             },
             { name: "灼蝋の欲望",
+              description: "次元影像の効果は初期値バフに記入してください（要検証）",
               effects: [{ type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [5, 6, 7, 8, 9, 10] }]
             },
             { name: "蜂蜜色の幻想惨劇",
@@ -234,6 +236,7 @@ const CHARACTER_MASTER = [
         baseAtk: 160, baseHp: 150, baseDef: 175, type: "standard",
         cards: [
             { name: "攻撃",
+              description: "次元影像の効果は初期値への加算に記入してください",
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
             { name: "防御",
@@ -575,7 +578,7 @@ const CHARACTER_MASTER = [
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: [150, 160, 170, 180, 190, 200], skills: [40, 48, 56, 64, 72, 80] }]
             },
             { name: "深淵の暗流",
-              description: "触腕ダメージの獲得量はその他バフ・デバフ１から計算できます",
+              description: "触腕ダメージの獲得量はその他バフ・デバフ１から計算できます、次元影像の効果は初期値バフに記入してください（要検証）",
               effects: [{ type: "poison", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] },
                         { type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [2.5, 3, 3.5, 4, 4.5, 5] }]
             },
@@ -762,12 +765,12 @@ const CHARACTER_MASTER = [
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [25, 30, 35, 40, 45, 50] }]
             },
             { name: "林檎磨きの抱擁",
-              description: "力の獲得量はその他バフ・デバフ１から計算できます、3凸効果は初期値バフに記入してください",
+              description: "力の獲得量はその他バフ・デバフ１から計算できます、3凸効果・次元影像の効果は初期値バフに記入してください（要検証）",
               effects: [{ type: "heal", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [40, 48, 56, 64, 72, 80] },
                         { type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [8, 9.6, 11.2, 12.8, 14.4, 16] }]
             },
             { name: "蒼白の血吻（極限解放）",
-              description: "力の獲得量はその他バフ・デバフ１から計算できます、3凸効果は初期値バフに記入してください",
+              description: "力の獲得量はその他バフ・デバフ１から計算できます、3凸効果・次元影像の効果は初期値バフに記入してください（要検証）",
               effects: [{ type: "heal", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [40, 48, 56, 64, 72, 80] },
                         { type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [8, 9.6, 11.2, 12.8, 14.4, 16] }]
             }
@@ -897,7 +900,7 @@ const CHARACTER_MASTER = [
               effects: [{ type: "other1", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [5, 6, 7, 8, 9, 10] }]
             },
             { name: "養分吸収",
-              description: "力の減少はその他バフ・デバフ１から、深紅の炉蓄積はその他バフ・デバフ２から計算できます",
+              description: "力の減少はその他バフ・デバフ１から、深紅の炉蓄積はその他バフ・デバフ２から計算できます。次元影像の効果は初期値バフに記入してください（要検証）",
               effects: [{ type: "other1", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] },
                         { type: "other2", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [20, 24, 28, 32, 36, 40] }]
             },
@@ -951,6 +954,7 @@ const CHARACTER_MASTER = [
         baseAtk: 135, baseHp: 210, baseDef: 210, type: "limited",
         cards: [
             { name: "攻撃",
+              description: "次元影像の効果は初期値バフに記入してください（要検証）",
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
             { name: "防御",
@@ -1100,9 +1104,11 @@ const CHARACTER_MASTER = [
               effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
             { name: "鎮魂歌",
+              description: "次元影像の効果は初期値バフに記入してください（要検証）",
               effects: [{ type: "other1", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
             { name: "響き渡る音",
+              description: "次元影像の効果は初期値バフに記入してください（要検証）",
               effects: [{ type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [6, 7.2, 8.4, 9.6, 10.8, 12] }]
             },
             { name: "星の極光",
@@ -1166,7 +1172,7 @@ const CHARACTER_MASTER = [
               effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
             { name: "鼠たちの突撃",
-              description: "スキルレベルは鼠たちの集結と同じにしてください",
+              description: "スキルレベルは鼠たちの集結と同じにしてください、次元影像の効果は初期値バフに記入してください（要検証）",
               effects: [{ type: "damage", stat: "atk", hits: 3, powerBonus: 100, tentacleBonus: 0, skills: [20, 24, 28, 32, 36, 40] }]
             },
             { name: "ブラウン出撃",
@@ -1258,7 +1264,7 @@ const CHARACTER_MASTER = [
               effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
             { name: "首切りの一撃",
-              description: "1凸効果とカード効果は初期値バフに記入してください（要検証）",
+              description: "1凸効果とカード効果は初期値バフに（足し合わせたものを）記入してください",
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [50, 60, 70, 80, 90, 100] }]
             },
             { name: "根源の海",
@@ -1266,15 +1272,15 @@ const CHARACTER_MASTER = [
             },
             { name: "千変万化・瘴",
               description: "派生カードなので倍率は要検証",
-              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [70, 84, 98, 112, 126, 140] }]
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [40, 48, 56, 64, 72, 80] }]
             },
             { name: "千変万化・鏡",
               description: "派生カードなので倍率は要検証",
-              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [100, 120, 140, 160, 180, 200] }]
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [60, 72, 84, 96, 108, 120] }]
             },
             { name: "千変万化・鎌",
               description: "派生カードなので倍率は要検証",
-              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [280, 336, 392, 448, 504, 560] }]
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [180, 216, 252, 288, 324, 360] }]
             }
         ]
     },
@@ -1295,7 +1301,7 @@ const CHARACTER_MASTER = [
               effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
             { name: "迷い人の守護",
-              description: "力の減少はその他バフ・デバフ１から計算できます、1凸効果は初期値バフに記入してください",
+              description: "力の減少はその他バフ・デバフ１から計算できます、1凸効果・次元影像の効果は初期値バフに記入してください（要検証）",
               effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [20, 24, 28, 32, 36, 40] },
                         { type: "poison", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [15, 18, 21, 24, 27, 30] },
                         { type: "other1", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [5, 6, 7, 8, 9, 10] }]
