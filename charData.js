@@ -1075,15 +1075,15 @@ const CHARACTER_MASTER = [
             },
             { name: "緑炎",
               description: "3凸効果は初期値バフに記入してください",
-              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 50, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
             { name: "腐敗の緑炎",
               description: "3凸効果は初期値バフに記入してください",
-              effects: [{ type: "damage", stat: "atk", hits: 2, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
+              effects: [{ type: "damage", stat: "atk", hits: 2, powerBonus: 50, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
             { name: "死滅の緑炎",
               description: "3凸効果は初期値バフに記入してください",
-              effects: [{ type: "damage", stat: "atk", hits: 3, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
+              effects: [{ type: "damage", stat: "atk", hits: 3, powerBonus: 50, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
             { name: "死告の舞い",
               effects: [{ type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
@@ -1353,6 +1353,39 @@ const CHARACTER_MASTER = [
             { name: "墨染めの詩（極限解放）",
               description: "1凸効果は初期値バフに記入してください",
               effects: [{ type: "heal", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [40, 48, 56, 64, 72, 80] }]
+            }
+        ]
+    },
+    {
+        name: "クレメンタイン",
+        baseAtk: 165, baseHp: 140, baseDef: 135, type: "limited",
+        cards: [
+            { name: "攻撃",
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
+            },
+            { name: "防御",
+              effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
+            },
+            { name: "苦痛の抽出",
+              description: "1凸効果は初期値バフに記入してください",
+              effects: [{ type: "damage", stat: "atk", hits: 3, powerBonus: 100, tentacleBonus: 0, skills: [50, 60, 70, 80, 90, 100] }]
+            },
+            { name: "星辰の鎮静",
+              description: "力の減少はその他バフ・デバフ１から計算できます、1凸効果は初期値バフに記入してください",
+              effects: [{ type: "heal", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [15, 18, 21, 24, 27, 30] },
+                        { type: "other1", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [4, 4.8, 5.6, 6.4, 7.2, 8] }]
+            },
+            { name: "生命再構築治療",
+              description: "パニック障害１点当たりの力の減少はその他バフ・デバフ１から計算できます",
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [160, 192, 224, 256, 288, 320] },
+                        { type: "heal", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [20, 24, 28, 32, 36, 40] },
+                        { type: "other1", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [6, 7.2, 8.4, 9.6, 10.8, 12] }]
+            },
+            { name: "深層意識浸食（極限解放）",
+              description: "パニック障害１点当たりの力の減少はその他バフ・デバフ１から計算できます",
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [160, 192, 224, 256, 288, 320] },
+                        { type: "heal", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [20, 24, 28, 32, 36, 40] },
+                        { type: "other1", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [6, 7.2, 8.4, 9.6, 10.8, 12] }]
             }
         ]
     }

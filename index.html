@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>忘却前夜 ダメージ・効果計算ツール v0.4.3</title>
+    <title>忘却前夜 ダメージ・効果計算ツール v0.5</title>
 
     <script src="charData.js"></script>
 
@@ -329,7 +329,7 @@
             color: var(--text-sub);
             line-height: 1.6;
             border: 1px solid rgba(255,255,255,0.05);
-            max-height: 360px;
+            max-height: 500px;
             overflow-y: auto;
         }
 
@@ -436,8 +436,8 @@
 
 <div class="container">
     <header>
-        <h1>忘却前夜 ダメージ・効果計算ツール v0.4.3</h1>
-        <p>触腕ダメージは不完全</p>
+        <h1>忘却前夜 ダメージ・効果計算ツール v0.5</h1>
+        <p>触腕ダメージは不完全、計算式を変更しました</p>
     </header>
 
     <div class="content">
@@ -650,8 +650,45 @@
                 </div>
             </div>
 
+            <div class="input-group">
+                <label for="otherBuff">(E) その他枠（すべての〇〇枠）</label>
+                <div class="input-wrapper">
+                    <input type="number" id="otherBuff" value="0" step="1" oninput="calculateDamage()">
+                    <span class="unit">%</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="finalEffect">(F) 最終効果</label>
+                <div class="input-wrapper">
+                    <input type="number" id="finalEffect" value="0" step="1" oninput="calculateDamage()">
+                    <span class="unit">%</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="languor">(G) 味方の「倦怠」デバフ値（ダメージ/触腕のみ）</label>
+                <div class="input-wrapper">
+                    <input type="number" id="languor" value="0" min="0" max="3" step="1" oninput="calculateDamage()">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="oppression">(G) 味方の「抑圧」デバフ値（シールドのみ）</label>
+                <div class="input-wrapper">
+                    <input type="number" id="oppression" value="0" step="1" oninput="calculateDamage()">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="seriousInjury">(G) 味方の「重傷」デバフ値（回復のみ）</label>
+                <div class="input-wrapper">
+                    <input type="number" id="seriousInjury" value="0" step="1" oninput="calculateDamage()">
+                </div>
+            </div>
+
             <div class="input-group" id="criticalGroup">
-                <label>(E) クリティカルダメージ</label>
+                <label>(H) クリティカルダメージ</label>
                 <label class="checkbox-wrapper" id="critCheckboxWrapper">
                     <input type="checkbox" id="isCritical" onchange="calculateDamage()">
                     <span class="checkbox-label-text" id="critCheckboxLabel">クリティカル発生</span>
@@ -663,51 +700,21 @@
             </div>
 
             <div class="input-group">
-                <label for="otherBuff">(F) その他枠（すべての〇〇枠）</label>
-                <div class="input-wrapper">
-                    <input type="number" id="otherBuff" value="0" step="1" oninput="calculateDamage()">
-                    <span class="unit">%</span>
-                </div>
-            </div>
-
-            <div class="input-group">
-                <label for="softening">(F) 敵の「軟化」デバフ値（ダメージ/触腕のみ）</label>
+                <label for="softening">(I) 敵の「軟化」デバフ値（ダメージ/触腕のみ）</label>
                 <div class="input-wrapper">
                     <input type="number" id="softening" value="0" min="0" max="3" step="1" oninput="calculateDamage()">
                 </div>
             </div>
 
             <div class="input-group">
-                <label for="languor">(F) 味方の「倦怠」デバフ値（ダメージ/触腕のみ）</label>
+                <label for="trauma">(I2) 敵の「トラウマ」デバフ値（ダメージ/触腕のみ）</label>
                 <div class="input-wrapper">
-                    <input type="number" id="languor" value="0" min="0" max="3" step="1" oninput="calculateDamage()">
+                    <input type="number" id="trauma" value="0" min="0" max="10" step="1" oninput="calculateDamage()">
                 </div>
             </div>
 
             <div class="input-group">
-                <label for="oppression">(F) 味方の「抑圧」デバフ値（シールドのみ）</label>
-                <div class="input-wrapper">
-                    <input type="number" id="oppression" value="0" step="1" oninput="calculateDamage()">
-                </div>
-            </div>
-
-            <div class="input-group">
-                <label for="seriousInjury">(F) 味方の「重傷」デバフ値（回復のみ）</label>
-                <div class="input-wrapper">
-                    <input type="number" id="seriousInjury" value="0" step="1" oninput="calculateDamage()">
-                </div>
-            </div>
-
-            <div class="input-group">
-                <label for="finalEffect">(G) 最終効果</label>
-                <div class="input-wrapper">
-                    <input type="number" id="finalEffect" value="0" step="1" oninput="calculateDamage()">
-                    <span class="unit">%</span>
-                </div>
-            </div>
-
-            <div class="input-group">
-                <label for="solid">(H) 敵の「堅固」バフ値（ダメージ/触腕のみ）</label>
+                <label for="solid">(J) 敵の「堅固」バフ値（ダメージ/触腕のみ）</label>
                 <div class="input-wrapper">
                     <input type="number" id="solid" value="0" max="100" step="1" oninput="calculateDamage()">
                     <span class="unit">%</span>
@@ -729,7 +736,7 @@
             </div>
             <div class="guide-text" id="guideTextContainer">
                 <p>忘却前夜のダメージ（など全ての効果の）計算ツールです。参照するステータスとスキルごとの倍率などの直接入力のほか、覚醒体とスキルを選択することで一部自動入力できるようになっています（カード効果の仕様を調査中のものもあります）。</p>
-                <p>計算式は公式Discordにてライムさんに教えていただいたものを元にしております。この場をお借りして感謝します。</p>
+                <p>計算式は公式Discordにてライムさんに教えていただいたものを元に再検証・修正したものを使用しております。この場をお借りして感謝します。</p>
                 <p>同名のバフがある場合、全ての数値を足したものを記入してください。また、〇〇の基礎効果とあるものは〇〇のものにしか適用されないことに注意してください。</p>
                 <p>初期値バフは1凸or3凸効果などが該当します（要検証、基礎効果と紛らわしいので注意）。</p>
                 <p>初期値への加算はアルバの「心眼の刃」やサンガーの「失われた芸術」が該当します。</p>
@@ -745,7 +752,9 @@
                 更新履歴
             </div>
             <ul class="history-list">
-              <li><span class="history-date">v0.4.3:ダフォの千変万化の倍率を修正、次元影像に関する注意を追加</span></li>
+              <li><span class="history-date">v0.5:クレメンタインのトラウマに対応、最終効果、倦怠あたりの計算式を修正</span></li>
+              <li><span class="history-date">v0.4.4:クレメンタインのデータを追加、CON参照スキルを指定したときにステータスがCONにならなかった問題を修正</span></li>
+              <li><span class="history-date">v0.4.3:ダフォダイルの千変万化の倍率を修正、次元影像に関する注意を追加</span></li>
               <li><span class="history-date">v0.4.2:内在霊格の入力に問題があったため修正</span></li>
               <li><span class="history-date">v0.4.1:霊識適性を追加、沙耶の性能調整と限定キャラの内在霊格の修正に対応</span></li>
               <li><span class="history-date">v0.4:溶壊ドールのデータを追加、通常ドールのステータス変更に対応、内在霊格と固定ダメージに対応、ヘロット極限によるバフの計算式の修正と記入欄の追加</span></li>
@@ -849,6 +858,7 @@ function handleEffectTypeChange() {
     const powerBonusLabel = document.getElementById('powerBonusLabel');
 
     const softeningInput = document.getElementById('softening');
+    const traumaInput = document.getElementById('trauma');
     const languorInput = document.getElementById('languor');
     const solidInput = document.getElementById('solid');
     const oppressionInput = document.getElementById('oppression');
@@ -870,6 +880,7 @@ function handleEffectTypeChange() {
     critWrapper.classList.remove('disabled');
 
     softeningInput.disabled = false;
+    traumaInput.disabled = false;
     languorInput.disabled = false;
     solidInput.disabled = false;
     oppressionInput.disabled = false;
@@ -905,6 +916,7 @@ function handleEffectTypeChange() {
 
     if (!isDamageOrTentacle) {
         softeningInput.disabled = true;
+        traumaInput.disabled = true;
         languorInput.disabled = true;
         solidInput.disabled = true;
     }
@@ -1026,7 +1038,7 @@ function handleEffectTypeChange() {
                 if (isTentacle) {
                     baseStatValue = 0;
                     formulaText = "触腕ダメージは1.1サブカテゴリ内の手動計算値を優先します";
-                } else if (currentEff.stat === 'hp') {
+                } else if (currentEff.stat === 'con') {
                     baseStatValue = Math.ceil(char.baseHp * (level + gpotential * 2 + levelModifier) / 100);
                     formulaText = `CON式: 基礎${char.baseHp} × (${level} + ${gpotential} × 2 + ${levelModifier}) / 100 = ${baseStatValue}`;
                     if (isDeepPhantom === 1) {
@@ -1251,6 +1263,16 @@ function calculateDamage() {
         else if (softVal === 2) softAddPercent = 40;
         else if (softVal === 3) softAddPercent = 50;
     }
+    const softMultiplier = 1 + (softAddPercent / 100);
+
+    let traumaAddPercent = 0;
+    let traumaVal = 0;
+    if (isDamageOrTentacle) {
+        let traumaInput = parseInt(document.getElementById('trauma').value) || 0;
+        traumaVal = traumaInput > 10 ? 10 : traumaInput;
+        traumaAddPercent = 5 * traumaInput;
+    }
+    const traumaMultiplier = 1 + (traumaAddPercent / 100);
 
     let langSubPercent = 0;
     let langVal = 0;
@@ -1283,13 +1305,16 @@ function calculateDamage() {
         else if (effectiveSeriousVal === 2) seriousSubPercent = 20;
         else if (effectiveSeriousVal === 3) seriousSubPercent = 25;
     }
+    const depressMultiplier = 1 - ((langSubPercent + oppSubPercent + seriousSubPercent) / 100);
 
     const specialBuffInput = parseFloat(document.getElementById('specialBuff').value) || 0;
     const specialMultiplier = 1 + (specialBuffInput / 100);
 
     const otherBuffInput = parseFloat(document.getElementById('otherBuff').value) || 0;
-    const totalOtherPercent = otherBuffInput + softAddPercent - langSubPercent - oppSubPercent - seriousSubPercent;
+    const totalOtherPercent = otherBuffInput;
     const totalOtherMultiplier = 1 + (totalOtherPercent / 100);
+    //const totalOtherPercent = otherBuffInput + softAddPercent - langSubPercent - oppSubPercent - seriousSubPercent;
+    //const totalOtherMultiplier = 1 + (totalOtherPercent / 100);
 
     const finalEffect = 1 + (parseFloat(document.getElementById('finalEffect').value) || 0) / 100;
 
@@ -1301,7 +1326,7 @@ function calculateDamage() {
     }
 
     let log = [];
-    let currentBeforeCritValue = 0;
+    let currentBeforeOther = 0;
 
     if (isTentacle) {
         let tentacleRawBase = Math.ceil(tentacleBaseValue * multiplier);
@@ -1313,7 +1338,7 @@ function calculateDamage() {
         let tentacleBaseEffectValue = Math.ceil(tentacleBaseBuffValue * baseEffectUpMultiplier);
         log.push(`【触腕専用：(B) 基礎効果の上昇】 前の値 (${tentacleBaseBuffValue}) × 効果上昇率 (${(baseEffectUpMultiplier*100-100).toFixed(0)}%) = ${tentacleBaseEffectValue} (切り上げ)`);
 
-        currentBeforeCritValue = tentacleBaseEffectValue;
+        currentBeforeOther = tentacleBaseEffectValue;
     } else {
         let rawBase = Math.ceil(atk * multiplier);
         log.push(`【初期値：乗算】 ステータス値 (${atk}) × 倍率 (${(multiplier*100).toFixed(0)}%) = ${rawBase} (切り上げ)`);
@@ -1344,13 +1369,13 @@ function calculateDamage() {
                 log.push(`【(S1) 特別枠】 前の値 (${step4a}) × バフ倍率 (${(specialMultiplier*100-100).toFixed(0)}%) = ${step4b}`);
                 let step4 = step4b + powerFromStat;
                 log.push(`【(D2) ${dParamName}】 前の値 (${step4b}) + ${dParamName}調整値 (${powerFromStat}) = ${step4}`);
-                currentBeforeCritValue = step4;
+                currentBeforeOther = step4;
             } else {
                 let step4b = Math.ceil(step3 * specialMultiplier);
                 log.push(`【(S1) 特別枠】 前の値 (${step3}) × バフ倍率 (${(specialMultiplier*100-100).toFixed(0)}%) = ${step4b}`);
                 let step4 = step4b + powerFromStat;
                 log.push(`【(D) ${dParamName}】 前の値 (${step4b}) + ${dParamName}調整値 (${powerFromStat}) = ${step4}`);
-                currentBeforeCritValue = step4;
+                currentBeforeOther = step4;
             }
         } else {
             let step4 = step3 + finalPowerTotal;
@@ -1359,36 +1384,66 @@ function calculateDamage() {
             } else {
                 log.push(`【(D) ${dParamName}】 前の値 (${step3}) + ${dParamName}調整値 (${powerFromStat}) = ${step4}`);
             }
-            currentBeforeCritValue = step4;
+            currentBeforeOther = step4;
         }
-
     }
 
-    let step5 = Math.ceil(currentBeforeCritValue * criticalRate);
+
+/*    let step5 = Math.ceil(currentBeforeOther * criticalRate);
     if (hasCritical) {
         if (isCritical) {
-            log.push(`【(E) クリティカルダメージ】 前の値 (${currentBeforeCritValue}) × 補正倍率 (+${critInput}% → ${(criticalRate*100).toFixed(0)}%) = ${step5} (切り上げ)`);
+            log.push(`【(E) クリティカルダメージ】 前の値 (${currentBeforeOther}) × 補正倍率 (+${critInput}% → ${(criticalRate*100).toFixed(0)}%) = ${step5} (切り上げ)`);
         } else {
             log.push(`【(E) クリティカルダメージ】 クリティカル未発生 = ${step5}`);
         }
     } else {
         log.push(`【(E) クリティカルダメージ】 対象外のためスキップ = ${step5}`);
-    }
-
+    }*/
+    let step5 = Math.ceil(currentBeforeOther)
     let step6 = Math.ceil(step5 * totalOtherMultiplier);
-    let logOtherParts = [`その他ベース(${otherBuffInput}%)`];
+    log.push(`【(E) その他枠】 前の値 (${step5}) × その他枠倍率 (${totalOtherPercent}%) = ${step6} (切り上げ)`);
+    /*let logOtherParts = [`その他ベース(${otherBuffInput}%)`];
     if (softVal > 0) logOtherParts.push(`軟化${softVal}(+${softAddPercent}%)`);
     if (langVal > 0) logOtherParts.push(`倦怠${langVal}(-${langSubPercent}%)`);
     if (oppVal > 0) logOtherParts.push(`抑圧${oppVal}(-${oppSubPercent}%)`);
-    if (seriousVal > 0) logOtherParts.push(`重傷${seriousVal}(-${seriousSubPercent}%)`);
-    log.push(`【(F) その他】 前の値 (${step5}) × その他合計倍率 [${logOtherParts.join(' + ')} ➔ 計 ${totalOtherPercent}%] (${totalOtherMultiplier.toFixed(2)}倍) = ${step6} (切り上げ)`);
+    if (seriousVal > 0) logOtherParts.push(`重傷${seriousVal}(-${seriousSubPercent}%)`);*/
 
     let step7 = Math.ceil(step6 * finalEffect);
-    log.push(`【(G) 最終効果】 前の値 (${step6}) × 最終効果倍率 (${(finalEffect*100-100).toFixed(0)}%) = ${step7} (切り上げ)`);
+    log.push(`【(F) 最終効果】 前の値 (${step6}) × 最終効果倍率 (${(finalEffect*100-100).toFixed(0)}%) = ${step7} (切り上げ)`);
 
-    let finalSingleDamage = Math.ceil(step7 * solidRate);
+    let step8 = Math.floor(step7 * depressMultiplier);
+    if (langVal > 0) {
+      log.push(`【(G) 倦怠】 前の値 (${step7}) × 倦怠${langVal}(-${langSubPercent}%) = ${step8} (切り捨て)`);
+    } else if (oppVal > 0) {
+      log.push(`【(G) 抑圧】 前の値 (${step7}) × 抑圧${oppVal}(-${oppSubPercent}%) = ${step8} (切り捨て)`);
+    } else if (seriousVal > 0) {
+      log.push(`【(G) 重傷】 前の値 (${step7}) × 重傷${seriousVal}(-${seriousSubPercent}%) = ${step8} (切り捨て)`);
+    }
+
+
+    let step9 = Math.ceil(step8 * criticalRate);
+    if (hasCritical) {
+        if (isCritical) {
+            log.push(`【(E) クリティカルダメージ】 前の値 (${step8}) × 補正倍率 (+${critInput}% → ${(criticalRate*100).toFixed(0)}%) = ${step9} (切り上げ)`);
+        } else {
+            log.push(`【(E) クリティカルダメージ】 クリティカル未発生 = ${step9}`);
+        }
+    } else {
+        log.push(`【(E) クリティカルダメージ】 対象外のためスキップ = ${step9}`);
+    }
+
+    let step10 = Math.ceil(step9 * softMultiplier);
+    if (softVal > 0) {
+      log.push(`【(I) 重傷】 前の値 (${step9}) × 軟化${softVal}(+${softAddPercent}%) = ${step10} (切り上げ)`);
+    }
+    let step11 = Math.ceil(step10 * traumaMultiplier);
+    if (softVal > 0) {
+      log.push(`【(I2) トラウマ】 前の値 (${step10}) × トラウマ${traumaVal}(+${traumaAddPercent}%) = ${step11} (切り上げ)`);
+    }
+
+    let finalSingleDamage = Math.ceil(step11 * solidRate);
     if (solidRate < 1.0) {
-        log.push(`【(H) 敵の堅固】 前の値 (${step7}) × 堅固減算補正 [100% - ${solidValue}%] = ${finalSingleDamage} (切り上げ)`);
+        log.push(`【(H) 敵の堅固】 前の値 (${step11}) × 堅固減算補正 [100% - ${solidValue}%] = ${finalSingleDamage} (切り上げ)`);
     }
 
     if (finalSingleDamage < 1) {
