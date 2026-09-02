@@ -462,6 +462,38 @@ const CHARACTER_MASTER = [
         ]
     },
     {
+        name: "ムシェット",
+        baseAtk: 165, baseHp: 140, baseDef: 140, type: "limited",
+        cards: [
+            { name: "攻撃",
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
+            },
+            { name: "防御",
+              effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
+            },
+            { name: "S☆スーパーノヴァ",
+              effects: [{ type: "damage", stat: "atk", hits: 2, powerBonus: 100, tentacleBonus: 0, skills: [15, 18, 21, 24, 27, 30] }]
+            },
+            { name: "S☆クラッシュ",
+              effects: [{ type: "damage", stat: "atk", hits: 3, powerBonus: 100, tentacleBonus: 0, skills: [35, 42, 49, 56, 63, 70] }]
+            },
+            { name: "運命的な出会い",
+              description: "1凸効果は初期値バフに記入してください",
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [80, 96, 112, 128, 144, 160] }]
+            },
+            { name: "シャイニング☆トルネード",
+              description: "「攻撃」への加算値はその他バフ・デバフ１から計算できます、最終法則の効果は初期値バフに100%を入力してください（要検証）",
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [180, 216, 252, 288, 324, 360] },
+                        { type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [60, 72, 84, 96, 108, 120] }],
+            },
+            { name: "ディザスター☆トルネード（極限解放）",
+              description: "「攻撃」への加算値はその他バフ・デバフ１から計算できます、最終法則の効果は初期値バフに100%を入力してください（要検証）",
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [180, 216, 252, 288, 324, 360] },
+                        { type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [60, 72, 84, 96, 108, 120] }],
+            }
+        ]
+    },
+    {
         name: "シレスト",
         baseAtk: 95, baseHp: 100, baseDef: 100, type: "standard",
         cards: [
@@ -673,25 +705,25 @@ const CHARACTER_MASTER = [
               effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
             { name: "不朽の威厳",
-              effects: [{ type: "tentacle", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [50, 55, 60, 65, 70, 75] }]
+              effects: [{ type: "tentacle", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [70, 76, 82, 88, 94, 100] }]
             },
             { name: "深淵の号令",
               description: "余波効果の触腕ダメージの獲得量はその他バフ・デバフ１から計算できます",
-              effects: [{ type: "tentacle", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [75, 90, 105, 120, 135, 150] },
-                        { type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [1, 1.2, 1.4, 1.6, 1.8, 2] }]
+              effects: [{ type: "tentacle", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [100, 120, 140, 160, 180, 200] },
+                        { type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [1.5, 1.8, 2.1, 2.4, 2.7, 3] }]
             },
             { name: "ルルイエ再臨",
               description: "触腕ダメージの獲得量はその他バフ・デバフ１から計算できます",
-              effects: [{ type: "tentacle", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [75, 90, 105, 120, 135, 150] },
-                        { type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [2.5, 3, 3.5, 4, 4.5, 5] }]
+              effects: [{ type: "tentacle", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [100, 120, 140, 160, 180, 200] },
+                        { type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [3, 3.6, 4.2, 4.8, 5.4, 6] }]
             },
             { name: "星辰正しき刻",
               description: "2凸効果による触腕ダメージの獲得は対応していません",
-              effects: [{ type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [5, 6, 7, 8, 9, 10] }]
+              effects: [{ type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [7.5, 9, 10.5, 12, 13.5, 15] }]
             },
             { name: "約束の日",
               description: "2凸・極限効果による触腕ダメージの獲得は対応していません",
-              effects: [{ type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [5, 6, 7, 8, 9, 10] }]
+              effects: [{ type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [7.5, 9, 10.5, 12, 13.5, 15] }]
             }
         ]
     },
