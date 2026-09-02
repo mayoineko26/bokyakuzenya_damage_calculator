@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>忘却前夜 ダメージ・効果計算ツール v0.5</title>
+    <title>忘却前夜 ダメージ・効果計算ツール v0.5.2</title>
 
     <script src="charData.js"></script>
 
@@ -386,6 +386,8 @@
             border-radius: 8px;
             padding: 16px;
             margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
         }
 
         .history-title {
@@ -436,7 +438,7 @@
 
 <div class="container">
     <header>
-        <h1>忘却前夜 ダメージ・効果計算ツール v0.5</h1>
+        <h1>忘却前夜 ダメージ・効果計算ツール v0.5.2</h1>
         <p>触腕ダメージは不完全、計算式を変更しました</p>
     </header>
 
@@ -752,6 +754,8 @@
                 更新履歴
             </div>
             <ul class="history-list">
+              <li><span class="history-date">v0.5.2:ムシェットのデータを追加、計算過程の表記ミスを修正</span></li>
+              <li><span class="history-date">v0.5.1:トゥルーの上方修正に対応</span></li>
               <li><span class="history-date">v0.5:クレメンタインのトラウマに対応、最終効果、倦怠あたりの計算式を修正</span></li>
               <li><span class="history-date">v0.4.4:クレメンタインのデータを追加、CON参照スキルを指定したときにステータスがCONにならなかった問題を修正</span></li>
               <li><span class="history-date">v0.4.3:ダフォダイルの千変万化の倍率を修正、次元影像に関する注意を追加</span></li>
@@ -1424,26 +1428,26 @@ function calculateDamage() {
     let step9 = Math.ceil(step8 * criticalRate);
     if (hasCritical) {
         if (isCritical) {
-            log.push(`【(E) クリティカルダメージ】 前の値 (${step8}) × 補正倍率 (+${critInput}% → ${(criticalRate*100).toFixed(0)}%) = ${step9} (切り上げ)`);
+            log.push(`【(H) クリティカルダメージ】 前の値 (${step8}) × 補正倍率 (+${critInput}% → ${(criticalRate*100).toFixed(0)}%) = ${step9} (切り上げ)`);
         } else {
-            log.push(`【(E) クリティカルダメージ】 クリティカル未発生 = ${step9}`);
+            log.push(`【(H) クリティカルダメージ】 クリティカル未発生 = ${step9}`);
         }
     } else {
-        log.push(`【(E) クリティカルダメージ】 対象外のためスキップ = ${step9}`);
+        log.push(`【(H) クリティカルダメージ】 対象外のためスキップ = ${step9}`);
     }
 
     let step10 = Math.ceil(step9 * softMultiplier);
     if (softVal > 0) {
-      log.push(`【(I) 重傷】 前の値 (${step9}) × 軟化${softVal}(+${softAddPercent}%) = ${step10} (切り上げ)`);
+      log.push(`【(I) 軟化】 前の値 (${step9}) × 軟化${softVal}(+${softAddPercent}%) = ${step10} (切り上げ)`);
     }
     let step11 = Math.ceil(step10 * traumaMultiplier);
-    if (softVal > 0) {
+    if (traumaVal > 0) {
       log.push(`【(I2) トラウマ】 前の値 (${step10}) × トラウマ${traumaVal}(+${traumaAddPercent}%) = ${step11} (切り上げ)`);
     }
 
     let finalSingleDamage = Math.ceil(step11 * solidRate);
     if (solidRate < 1.0) {
-        log.push(`【(H) 敵の堅固】 前の値 (${step11}) × 堅固減算補正 [100% - ${solidValue}%] = ${finalSingleDamage} (切り上げ)`);
+        log.push(`【(J) 敵の堅固】 前の値 (${step11}) × 堅固減算補正 [100% - ${solidValue}%] = ${finalSingleDamage} (切り上げ)`);
     }
 
     if (finalSingleDamage < 1) {
