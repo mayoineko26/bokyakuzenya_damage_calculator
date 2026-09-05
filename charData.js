@@ -452,10 +452,12 @@ const CHARACTER_MASTER = [
                 }
             },
             { name: "終点、真理と深淵の扉",
+              description: "霊識適性による虚無終結の基礎ダメージ増加効果は初期値バフに記入してください",
               effects: [{ type: "heal", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [35, 42, 49, 56, 63, 70] },
                         { type: "fixdamage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [540, 1080, 1620, 2160, 2700, 3240] }],
             },
             { name: "狂乱感染（極限解放）",
+              description: "霊識適性による虚無終結の基礎ダメージ増加効果は初期値バフに記入してください",
               effects: [{ type: "heal", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [35, 42, 49, 56, 63, 70] },
                         { type: "fixdamage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [540, 1080, 1620, 2160, 2700, 3240] }],
             }

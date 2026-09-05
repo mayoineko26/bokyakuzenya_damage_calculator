@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>忘却前夜 ダメージ・効果計算ツール v0.5.2</title>
+    <title>忘却前夜 ダメージ・効果計算ツール v0.6</title>
 
     <script src="charData.js"></script>
 
@@ -438,8 +438,8 @@
 
 <div class="container">
     <header>
-        <h1>忘却前夜 ダメージ・効果計算ツール v0.5.2</h1>
-        <p>触腕ダメージは不完全、計算式を変更しました</p>
+        <h1>忘却前夜 ダメージ・効果計算ツール v0.6</h1>
+        <p>触腕ダメージは不完全</p>
     </header>
 
     <div class="content">
@@ -645,6 +645,13 @@
             </div>
 
             <div class="input-group">
+                <label for="specialAddBuff" id="powerInputLabel">(D') 特殊加算枠（ムシェット狂気解放など）</label>
+                <div class="input-wrapper">
+                    <input type="number" id="specialAddBuff" value="0" step="1" oninput="calculateDamage()">
+                </div>
+            </div>
+
+            <div class="input-group">
                 <label for="specialBuff">(S1) 特別枠（ヘロット極限枠）</label>
                 <div class="input-wrapper">
                     <input type="number" id="specialBuff" value="0" step="1" oninput="calculateDamage()">
@@ -742,6 +749,7 @@
                 <p>同名のバフがある場合、全ての数値を足したものを記入してください。また、〇〇の基礎効果とあるものは〇〇のものにしか適用されないことに注意してください。</p>
                 <p>初期値バフは1凸or3凸効果などが該当します（要検証、基礎効果と紛らわしいので注意）。</p>
                 <p>初期値への加算はアルバの「心眼の刃」やサンガーの「失われた芸術」が該当します。</p>
+                <p>特殊加算枠はムシェットの狂気解放による攻撃へのボーナスを想定しています。触腕ダメージボーナスによる加算値の直接入力にも利用可能です。</p>
                 <p>その他バフ・デバフは力の増加・減少、浸食などを想定しています。</p>
                 <p>幻夢の深奥の強化覚醒体指定と霊識適性は同時には適用されません。</p>
                 <p>触腕ダメージの計算式は未解明のため、現在はゲームの表示上で見えている触腕ダメージの値を入力することで、そのあとのダメージ計算を行えるようにしています。（計算式を正確に理解できているか怪しいため、間違いがあるかもしれません。）</p>
@@ -754,6 +762,7 @@
                 更新履歴
             </div>
             <ul class="history-list">
+              <li><span class="history-date">v0.6:特殊加算枠（ムシェットの狂気解放など）を追加</span></li>
               <li><span class="history-date">v0.5.2:ムシェットのデータを追加、計算過程の表記ミスを修正</span></li>
               <li><span class="history-date">v0.5.1:トゥルーの上方修正に対応</span></li>
               <li><span class="history-date">v0.5:クレメンタインのトラウマに対応、最終効果、倦怠あたりの計算式を修正</span></li>
@@ -849,6 +858,7 @@ function handleEffectTypeChange() {
     const baseEffectUpInput = document.getElementById('baseEffectUp');
     const damageEnhanceInput = document.getElementById('damageEnhance');
     const powerInput = document.getElementById('power');
+    const specialAddBuffInput = document.getElementById('specialAddBuff');
     const powerBonusInput = document.getElementById('powerBonus');
     const tentacleBonusInput = document.getElementById('tentacleBonus');
     const baseAddInput = document.getElementById('baseAdd');
@@ -874,6 +884,7 @@ function handleEffectTypeChange() {
     baseEffectUpInput.disabled = false;
     damageEnhanceInput.disabled = false;
     powerInput.disabled = false;
+    specialAddBuffInput.disabled = false;
     powerBonusInput.disabled = false;
     tentacleBonusInput.disabled = false;
     baseAddInput.disabled = false;
@@ -1251,7 +1262,9 @@ function calculateDamage() {
     const rawPower = parseFloat(document.getElementById('power').value) || 0;
     const powerFromStat = Math.ceil(rawPower * pBonus);
     const powerFromTentacleBonus = Math.ceil(tentacleBaseValue * tentacleBonus);
-    const finalPowerTotal = powerFromStat + powerFromTentacleBonus;
+    const powerFromSpecialBuff = parseFloat(document.getElementById('specialAddBuff').value) || 0;
+    const finalPowerTotal = powerFromStat + powerFromTentacleBonus + powerFromSpecialBuff;
+
 
     const hasCritical = isDamageOrTentacle;
     const isCritical = hasCritical ? document.getElementById('isCritical').checked : false;
@@ -1365,10 +1378,28 @@ function calculateDamage() {
             log.push(`【(C) ダメージ強化】 対象外のためスキップ = ${step3}`);
         }
 
-        if (specialMultiplier > 0) {
+        if (specialMultiplier > 1) {
             if (tentacleBonus > 0) {
                 let step4a = step3 + powerFromTentacleBonus;
                 log.push(`【(D1) 触腕ボーナス】 前の値 (${step3}) ＋ 触腕ボーナス(${powerFromTentacleBonus}) = ${step4a}`);
+                if (powerFromSpecialBuff > 0){
+                    let step4b = step4a + powerFromSpecialBuff;
+                    log.push(`【(D2) 特殊加算枠】 前の値 (${step4a}) ＋ 加算値(${powerFromSpecialBuff}) = ${step4b}`);
+                    let step4c = Math.ceil(step4b * specialMultiplier);
+                    log.push(`【(S1) 特別枠】 前の値 (${step4b}) × バフ倍率 (${(specialMultiplier*100-100).toFixed(0)}%) = ${step4c}`);
+                    let step4 = step4c + powerFromStat;
+                    log.push(`【(D3) ${dParamName}】 前の値 (${step4c}) + ${dParamName}調整値 (${powerFromStat}) = ${step4}`);
+                    currentBeforeOther = step4;
+                } else {
+                    let step4b = Math.ceil(step4a * specialMultiplier);
+                    log.push(`【(S1) 特別枠】 前の値 (${step4a}) × バフ倍率 (${(specialMultiplier*100-100).toFixed(0)}%) = ${step4b}`);
+                    let step4 = step4b + powerFromStat;
+                    log.push(`【(D2) ${dParamName}】 前の値 (${step4b}) + ${dParamName}調整値 (${powerFromStat}) = ${step4}`);
+                    currentBeforeOther = step4;
+                }
+            } else if (powerFromSpecialBuff > 0){
+                let step4a = step3 + powerFromSpecialBuff;
+                log.push(`【(D1) 特殊加算枠】 前の値 (${step3}) ＋ 加算値(${powerFromSpecialBuff}) = ${step4a}`);
                 let step4b = Math.ceil(step4a * specialMultiplier);
                 log.push(`【(S1) 特別枠】 前の値 (${step4a}) × バフ倍率 (${(specialMultiplier*100-100).toFixed(0)}%) = ${step4b}`);
                 let step4 = step4b + powerFromStat;
@@ -1383,8 +1414,8 @@ function calculateDamage() {
             }
         } else {
             let step4 = step3 + finalPowerTotal;
-            if (tentacleBonus > 0) {
-                log.push(`【(D) ${dParamName}】 前の値 (${step3}) + 合計調整値 (${finalPowerTotal}) [内訳：本来の力(${powerFromStat}) ＋ 触腕ボーナス(${powerFromTentacleBonus})] = ${step4}`);
+            if ((tentacleBonus > 0) || (powerFromSpecialBuff > 0)) {
+                log.push(`【(D) ${dParamName}】 前の値 (${step3}) + 合計調整値 (${finalPowerTotal}) [内訳：本来の力(${powerFromStat}) ＋ 触腕ボーナス(${powerFromTentacleBonus}) ＋ 特殊加算枠(${powerFromSpecialBuff})] = ${step4}`);
             } else {
                 log.push(`【(D) ${dParamName}】 前の値 (${step3}) + ${dParamName}調整値 (${powerFromStat}) = ${step4}`);
             }
