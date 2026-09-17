@@ -676,7 +676,7 @@ const CHARACTER_MASTER = [
             { name: "深海の力",
               effects: [{ type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [4, 4.8, 5.6, 6.4, 7.2, 8] }]
             },
-            { name: "巨人の腕力",
+            { name: "巨人の腕力（極限解放）",
               description: "極限解放の効果は初期値バフに記載してください（200％）",
               effects: [{ type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [4, 4.8, 5.6, 6.4, 7.2, 8] }]
             },
@@ -723,7 +723,7 @@ const CHARACTER_MASTER = [
               description: "2凸効果による触腕ダメージの獲得は対応していません",
               effects: [{ type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [7.5, 9, 10.5, 12, 13.5, 15] }]
             },
-            { name: "約束の日",
+            { name: "約束の日（極限解放）",
               description: "2凸・極限効果による触腕ダメージの獲得は対応していません",
               effects: [{ type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [7.5, 9, 10.5, 12, 13.5, 15] }]
             }
@@ -753,7 +753,7 @@ const CHARACTER_MASTER = [
               effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [20, 24, 28, 32, 36, 40] },
                         { type: "tentacle", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [50, 55, 60, 65, 70, 75] }]
             },
-            { name: "自由の誓い",
+            { name: "自由の誓い（極限解放）",
               description: "1凸効果は初期値バフに記入してください、極限解放効果はその他枠？",
               effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [20, 24, 28, 32, 36, 40] },
                         { type: "tentacle", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [50, 55, 60, 65, 70, 75] }]
@@ -779,6 +779,48 @@ const CHARACTER_MASTER = [
               description: "力の獲得量はその他バフ・デバフ１から計算できます",
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [20, 24, 28, 32, 36, 40] },
                         { type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [2.5, 3, 3.5, 4, 4.5, 5] }]
+            }
+        ]
+    },
+    {
+        name: "コーパサント",
+        baseAtk: 140, baseHp: 160, baseDef: 165, type: "limited",
+        cards: [
+            { name: "攻撃",
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
+            },
+            { name: "防御",
+              description: "3凸効果は倍率に反映しています（要検証）",
+              effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }],
+              awakenOverrides: {
+                    3: {
+                        effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [12, 14.4, 16.8, 19.2, 21.6, 24] }]
+                    }
+                }
+            },
+            { name: "制裁の雷",
+              description: "侵蝕はその他バフ・デバフ１から計算できます。霊識適性の効果は初期値バフに記入してください（要検証）",
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [20, 24, 28, 32, 36, 40] },
+                        { type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [40, 80, 120, 160, 200, 240] }]
+            },
+            { name: "秩序なき信号旗",
+              description: "力の獲得はその他バフ・デバフ１から計算できます。3凸効果は倍率に反映しています（要検証）",
+              effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [15, 18, 21, 24, 27, 30] },
+                        { type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [4, 4.8, 5.6, 6.4, 7.2, 8] }],
+              awakenOverrides: {
+                  3: {
+                      effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [18, 21.6, 25.2, 28.8, 32.4, 36] },
+                                { type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [4, 4.8, 5.6, 6.4, 7.2, 8] }]
+                  }
+              }
+            },
+            { name: "深海を照らす標",
+              description: "霊識適性の効果は初期値バフに記入してください（要検証）",
+              effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [40, 48, 56, 64, 72, 80] }]
+            },
+            { name: "死を恐れぬ天火（極限解放）",
+              description: "霊識適性の効果は初期値バフに記入してください（要検証）",
+              effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [40, 48, 56, 64, 72, 80] }]
             }
         ]
     },
@@ -995,11 +1037,11 @@ const CHARACTER_MASTER = [
               effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
             { name: "祝福の骨肉",
-              description: "1凸効果は初期値バフに記入してください",
+              description: "1凸効果・霊識適性の効果は初期値バフに記入してください（要検証）",
               effects: [{ type: "other1", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [20, 24, 28, 32, 36, 40] }]
             },
             { name: "苦痛の解消",
-              description: "3凸効果や浄化効果は初期値バフに記入してください（要検証）、献身による深紅の炉の獲得量はその他バフ・デバフ１から計算できます",
+              description: "3凸効果・霊識適性の効果や浄化効果は初期値バフに記入してください（要検証）、献身による深紅の炉の獲得量はその他バフ・デバフ１から計算できます",
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [30, 36, 42, 48, 54, 60] },
                         { type: "other1", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
@@ -1220,6 +1262,7 @@ const CHARACTER_MASTER = [
         baseAtk: 180, baseHp: 185, baseDef: 180, type: "standard",
         cards: [
             { name: "攻撃",
+              description: "霊識適性の効果は初期値バフに記入してください（要検証）",
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }],
               awakenOverrides: {
                     2: {
@@ -1228,6 +1271,7 @@ const CHARACTER_MASTER = [
                 }
             },
             { name: "防御",
+              description: "霊識適性の効果は初期値バフに記入してください（要検証）",
               effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }],
               awakenOverrides: {
                     1: {
@@ -1236,7 +1280,7 @@ const CHARACTER_MASTER = [
                 }
             },
             { name: "変数の最適化",
-              description: "力の獲得量はその他バフ・デバフ１から、警戒の獲得量はその他バフ・デバフ２から計算できます",
+              description: "力の獲得量はその他バフ・デバフ１から、警戒の獲得量はその他バフ・デバフ２から計算できます、最終法則の効果は初期値バフに記入してください（要検証）",
               effects: [{ type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [4.5, 5.4, 6.3, 7.2, 8.1, 9] },
                         { type: "other2", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [1.5, 1.8, 2.1, 2.4, 2.7, 3] }]
             },
@@ -1246,14 +1290,17 @@ const CHARACTER_MASTER = [
                         { type: "other2", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [1.5, 1.8, 2.1, 2.4, 2.7, 3] }]
             },
             { name: "機能過負担",
+              description: "霊識適性の効果は初期値バフに記入してください（要検証）",
               effects: [{ type: "damage", stat: "atk", hits: 3, powerBonus: 100, tentacleBonus: 0, skills: [16, 19.2, 22.4, 25.6, 28.8, 32] },
                         { type: "shield", stat: "def", hits: 3, powerBonus: 100, tentacleBonus: 0, skills: [8, 9.6, 11.2, 12.8, 14.4, 16] }]
             },
             { name: "電磁爆撃",
+              description: "霊識適性の効果は初期値バフに記入してください（要検証）",
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [30, 36, 42, 48, 54, 60] },
                         { type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [20, 24, 28, 32, 36, 40] }]
             },
             { name: "多重計算（極限解放）",
+              description: "霊識適性の効果は初期値バフに記入してください（要検証）",
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [30, 36, 42, 48, 54, 60] },
                         { type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [20, 24, 28, 32, 36, 40] }]
             }
@@ -1343,18 +1390,21 @@ const CHARACTER_MASTER = [
             { name: "脊椎針の鎖",
               effects: [{ type: "damage", stat: "atk", hits: 3, powerBonus: 100, tentacleBonus: 0, skills: [15, 18, 21, 24, 27, 30] }]
             },
-            { name: "迷い人の守護",
-              description: "跳躍で獲得するシールドは迷い人の守護（跳躍効果）から計算してください、3凸効果は初期値バフに記入してください（100％）",
-              effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [15, 18, 21, 24, 27, 30] },
-                        { type: "poison", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [12, 14.4, 16.8, 19.2, 21.6, 24] }]
+            { name: "死せる夢の都",
+              description: "跳躍で獲得するシールドは死せる夢の都（跳躍効果）から計算してください、3凸効果は初期値バフに記入してください（100％）",
+              effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [22.5, 27, 31.5, 36, 40.5, 45] },
+                        { type: "poison", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [24, 28.8, 33.6, 38.4, 43.2, 48] }]
             },
-            { name: "迷い人の守護（跳躍効果）",
+            { name: "死せる夢の都（跳躍効果）",
               effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [7.5, 9, 10.5, 12, 13.5, 15] }]
             },
             { name: "迷夢の導き（極限解放）",
-              description: "跳躍で獲得するシールドは迷い人の守護（跳躍）から計算してください、3凸効果は初期値バフに記入してください（100％）",
-              effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [15, 18, 21, 24, 27, 30] },
-                        { type: "poison", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [12, 14.4, 16.8, 19.2, 21.6, 24] }]
+              description: "跳躍で獲得するシールドは死せる夢の都（跳躍効果）から、カード使用後に追加で獲得する反撃は迷夢の導き（追加反撃）から計算してください、3凸効果は初期値バフに記入してください（100％）",
+              effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [22.5, 27, 31.5, 36, 40.5, 45] },
+                        { type: "poison", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [24, 28.8, 33.6, 38.4, 43.2, 48] }]
+            },
+            { name: "迷夢の導き（追加反撃）",
+              effects: [{ type: "poison", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [24, 24, 24, 24, 24, 24] }]
             }
         ]
     },
