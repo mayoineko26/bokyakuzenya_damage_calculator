@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>忘却前夜 ダメージ・効果計算ツール v0.6</title>
+    <title>忘却前夜 ダメージ・効果計算ツール v0.6.1</title>
 
     <script src="charData.js"></script>
 
@@ -438,7 +438,7 @@
 
 <div class="container">
     <header>
-        <h1>忘却前夜 ダメージ・効果計算ツール v0.6</h1>
+        <h1>忘却前夜 ダメージ・効果計算ツール v0.6.1</h1>
         <p>触腕ダメージは不完全</p>
     </header>
 
@@ -762,6 +762,7 @@
                 更新履歴
             </div>
             <ul class="history-list">
+              <li><span class="history-date">v0.6.1:コーパサントのデータを追加、ワンダの能力調整などに対応</span></li>
               <li><span class="history-date">v0.6:特殊加算枠（ムシェットの狂気解放など）を追加</span></li>
               <li><span class="history-date">v0.5.2:ムシェットのデータを追加、計算過程の表記ミスを修正</span></li>
               <li><span class="history-date">v0.5.1:トゥルーの上方修正に対応</span></li>
@@ -1176,6 +1177,16 @@ function applyDatabaseValues() {
     if (!char.cards || !char.cards[cardIndex]) return;
 
     let card = char.cards[cardIndex];
+
+    const descriptionArea = document.getElementById('cardDescriptionArea');
+    if (card.description) {
+        // データに説明文がある場合はそれを表示
+        descriptionArea.innerHTML = `<span class="text-dark">${card.description}</span>`;
+    } else {
+        // 説明文がない、またはデフォルト状態の表示
+        descriptionArea.innerHTML = `<span class="text-muted">特にありません。</span>`;
+    }
+
     let awakenText = "通常性能を適用中";
 
     if (card.awakenOverrides) {
@@ -1197,14 +1208,6 @@ function applyDatabaseValues() {
     const availableTypes = card.effects.map(e => e.type);
     rebuildEffectTypeSelect(availableTypes);
 
-    const descriptionArea = document.getElementById('cardDescriptionArea');
-    if (card.description) {
-        // データに説明文がある場合はそれを表示
-        descriptionArea.innerHTML = `<span class="text-dark">${card.description}</span>`;
-    } else {
-        // 説明文がない、またはデフォルト状態の表示
-        descriptionArea.innerHTML = `<span class="text-muted">特にありません。</span>`;
-    }
 }
 
 // ==========================================
