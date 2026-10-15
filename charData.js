@@ -268,6 +268,7 @@ const CHARACTER_MASTER = [
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
             { name: "防御",
+              description: "霊識適性の毒付与量には対応していません",
               effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
             { name: "ガマシチュー",
@@ -278,6 +279,7 @@ const CHARACTER_MASTER = [
               effects: [{ type: "heal", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
             { name: "ごゆっくり！",
+              description: "霊識適性の効果は初期値バフに記入してください",
               effects: [{ type: "heal", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [25, 30, 35, 40, 45, 50] }]
             },
             { name: "豪華な食事（極限解放）",
@@ -326,8 +328,12 @@ const CHARACTER_MASTER = [
               description: "抑鬱人格効果は初期値バフに記入してください（100%もしくは300%）（間違っているかも）",
               effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
+            { name: "調停人格",
+              description: "最終法則の触腕ダメージ獲得量の計算用です",
+              effects: [{ type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [2.4, 2.4, 2.4, 2.4, 2.4, 2.4] }]
+            },
             { name: "異種共生",
-              description: "力の獲得量はその他バフ・デバフ１から計算できます",
+              description: "力の獲得量はその他バフ・デバフ１から計算できます、霊識適性の効果は初期値バフに記入してください",
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [20, 24, 28, 32, 36, 40] },
                         { type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [2, 2.4, 2.8, 3.2, 3.6, 4] }]
             },
@@ -337,6 +343,10 @@ const CHARACTER_MASTER = [
             { name: "歪んだ死体の宴",
               description: "界域ごと＋人格ごとに別のバフがあるため、適宜数値を変更してください",
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: [200, 220, 240, 260, 280, 300], tentacleBonus: 0, skills: [50, 60, 70, 80, 90, 100] }]
+            },
+            { name: "歪んだ死体の宴（超次元追加ダメ）",
+              description: "超次元界域で霊知覚醒したときに追加で全体攻撃するダメージの計算用です（力ボーナスは要検証）",
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: [200, 220, 240, 260, 280, 300], tentacleBonus: 0, skills: [25, 30, 35, 40, 45, 50] }]
             },
             { name: "異形の解剖（極限解放）",
               description: "界域ごと＋人格ごとに別のバフがあるため、適宜数値を変更してください",
@@ -609,12 +619,12 @@ const CHARACTER_MASTER = [
               effects: [{ type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [2.5, 3, 3.5, 4, 4.5, 5] }]
             },
             { name: "狂熱の海",
-              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: [150, 160, 170, 180, 190, 200], skills: [40, 48, 56, 64, 72, 80] }]
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: [200, 220, 240, 260, 280, 300], skills: [40, 48, 56, 64, 72, 80] }]
             },
             { name: "深淵の暗流",
-              description: "触腕ダメージの獲得量はその他バフ・デバフ１から計算できます、次元影像の効果は初期値バフに記入してください（要検証）",
+              description: "触腕ダメージの獲得量はその他バフ・デバフ１から計算できます、次元影像・霊識適性の効果は初期値バフに記入してください（要検証）",
               effects: [{ type: "poison", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] },
-                        { type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [2.5, 3, 3.5, 4, 4.5, 5] }]
+                        { type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [5, 6, 7, 8, 9, 10] }]
             },
             { name: "失われた古都",
               description: "3凸効果は初期値バフに記入してください",
@@ -768,7 +778,9 @@ const CHARACTER_MASTER = [
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
             { name: "防御",
-              effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
+              description: "祭儀による回復量も計算できます。触腕本数による補正はその他枠に記入してください（要検証）",
+              effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] },
+                        { type: "heal", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [20, 20, 20, 20, 20, 20] }]
             },
             { name: "信仰の岐路",
               description: "派生カードのため倍率は不正確かもしれません",
@@ -776,8 +788,9 @@ const CHARACTER_MASTER = [
                         { type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [2, 2.4, 2.8, 3.2, 3.6, 4] }]
             },
             { name: "至高の生贄",
-              description: "力の獲得量はその他バフ・デバフ１から計算できます",
+              description: "力の獲得量はその他バフ・デバフ１から計算できます、霊識適性による基礎ダメージの上昇はは初期値バフに、力の基礎効果は基礎効果の上昇に記入してください",
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [20, 24, 28, 32, 36, 40] },
+                        { type: "tentacle", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [150, 150, 150, 150, 150, 150] },
                         { type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [2.5, 3, 3.5, 4, 4.5, 5] }]
             }
         ]
@@ -890,18 +903,17 @@ const CHARACTER_MASTER = [
         baseAtk: 170, baseHp: 175, baseDef: 125, type: "standard",
         cards: [
             { name: "攻撃",
-              description: "極限解放の効果はその他枠（100％）です",
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
             { name: "防御",
               effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
             { name: "鎖を断つ一撃",
-              description: "1,3凸効果は初期値バフに記入してください（カード効果については要検証）、極限解放の効果はその他枠です（100％）",
+              description: "1,3凸効果は初期値バフに記入してください（カード効果については要検証）",
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [75, 90, 105, 120, 135, 150] }]
             },
             { name: "長き憎しみ",
-              description: "2凸効果は初期値バフに記入してください、極限解放の効果はその他枠（100％）です",
+              description: "2凸効果は初期値バフに記入してください",
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [25, 30, 35, 40, 45, 50] }]
             }
         ]
@@ -1470,6 +1482,46 @@ const CHARACTER_MASTER = [
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [160, 192, 224, 256, 288, 320] },
                         { type: "heal", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [20, 24, 28, 32, 36, 40] },
                         { type: "other1", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [6, 7.2, 8.4, 9.6, 10.8, 12] }]
+            }
+        ]
+    },
+    {
+        name: "カストル",
+        baseAtk: 150, baseHp: 165, baseDef: 175, type: "limited",
+        cards: [
+            { name: "攻撃",
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
+            },
+            { name: "防御",
+              effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
+            },
+            { name: "永夜行",
+              effects: [{ type: "damage", stat: "atk", hits: 3, powerBonus: 100, tentacleBonus: 0, skills: [20, 24, 28, 32, 36, 40] }]
+            },
+            { name: "日を覆う羽",
+              description: "力の減少はその他バフ・デバフ１から計算できます、2凸効果はその他枠に記入してください（要検証）",
+              effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [15, 18, 21, 24, 27, 30] },
+                        { type: "other1", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [7, 8.4, 9.8, 11.2, 12.6, 14] }]
+            },
+            { name: "不屈の孤鳥",
+              description: "3凸効果はその他枠に記入してください（要検証）",
+              effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [25, 30, 35, 40, 45, 50] }]
+            },
+            { name: "茨の海を越えて（極限解放）",
+              description: "3凸効果はその他枠に記入してください（要検証）",
+              effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [25, 30, 35, 40, 45, 50] }]
+            },
+            { name: "黒い羽",
+              description: "スキルレベルは生成元のスキルと同じです、浸食の付与量はその他バフ・デバフ１から計算できます、1凸効果は初期値バフに記入してください、次元影像の効果はその他枠に記載してください（要検証）",
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [15, 18, 21, 24, 27, 30] },
+                        { type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [7.5, 9, 10.5, 12, 13.5, 15] },
+                        { type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [25, 50, 75, 100, 125, 150] }]
+            },
+            { name: "双生・黒い羽",
+              description: "スキルレベルは極限解放と同じです、浸食の付与量はその他バフ・デバフ１から計算できます、1凸効果は初期値バフに記入してください、次元影像の効果はその他枠に記載してください（要検証）",
+              effects: [{ type: "damage", stat: "atk", hits: 2, powerBonus: 100, tentacleBonus: 0, skills: [15, 18, 21, 24, 27, 30] },
+                        { type: "shield", stat: "def", hits: 2, powerBonus: 100, tentacleBonus: 0, skills: [7.5, 9, 10.5, 12, 13.5, 15] },
+                        { type: "other1", stat: "atk", hits: 2, powerBonus: 100, tentacleBonus: 0, skills: [25, 50, 75, 100, 125, 150] }]
             }
         ]
     }
