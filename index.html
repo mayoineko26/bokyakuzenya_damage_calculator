@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>忘却前夜 ダメージ・効果計算ツール v0.6.2</title>
+    <title>忘却前夜 ダメージ・効果計算ツール v0.7</title>
 
     <script src="charData.js"></script>
 
@@ -438,7 +438,7 @@
 
 <div class="container">
     <header>
-        <h1>忘却前夜 ダメージ・効果計算ツール v0.6.2</h1>
+        <h1>忘却前夜 ダメージ・効果計算ツール v0.7</h1>
         <p>触腕ダメージは不完全</p>
     </header>
 
@@ -762,6 +762,7 @@
                 更新履歴
             </div>
             <ul class="history-list">
+              <li><span class="history-date">v0.7:初期値バフの計算式を修正</span></li>
               <li><span class="history-date">v0.6.2:カストルのデータを追加、能力調整・新規霊識適性などに対応</span></li>
               <li><span class="history-date">v0.6.1:コーパサントのデータを追加、ワンダの能力調整などに対応</span></li>
               <li><span class="history-date">v0.6:特殊加算枠（ムシェットの狂気解放など）を追加</span></li>
@@ -1350,30 +1351,30 @@ function calculateDamage() {
     let currentBeforeOther = 0;
 
     if (isTentacle) {
-        let tentacleRawBase = Math.ceil(tentacleBaseValue * multiplier);
-        log.push(`【触腕ダメージ：乗算】 触腕ダメージ手動入力値 (${tentacleBaseValue}) × 倍率 (${(multiplier*100).toFixed(0)}%) = ${tentacleRawBase} (切り上げ)`);
+        let tentacleRawBase = Math.ceil(tentacleBaseValue * multiplier * baseBuffMultiplier);
+        log.push(`【(A) 初期値：乗算】 触腕ダメージ手動入力値 (${tentacleBaseValue}) × 倍率 (${(multiplier*100).toFixed(0)}%) × バフ倍率 (${(baseBuffMultiplier*100-100).toFixed(0)}%) = ${tentacleRawBase} (切り上げ)`);
 
-        let tentacleBaseBuffValue = Math.ceil(tentacleRawBase * baseBuffMultiplier);
-        log.push(`【触腕専用：(A) 初期値バフ】 前の値 (${tentacleRawBase}) × バフ倍率 (${(baseBuffMultiplier*100-100).toFixed(0)}%) = ${tentacleBaseBuffValue} (切り上げ)`);
+        /*let tentacleBaseBuffValue = Math.ceil(tentacleRawBase * baseBuffMultiplier);
+        log.push(`【触腕専用：(A) 初期値バフ】 前の値 (${tentacleRawBase}) × バフ倍率 (${(baseBuffMultiplier*100-100).toFixed(0)}%) = ${tentacleBaseBuffValue} (切り上げ)`);*/
 
-        let tentacleBaseEffectValue = Math.ceil(tentacleBaseBuffValue * baseEffectUpMultiplier);
-        log.push(`【触腕専用：(B) 基礎効果の上昇】 前の値 (${tentacleBaseBuffValue}) × 効果上昇率 (${(baseEffectUpMultiplier*100-100).toFixed(0)}%) = ${tentacleBaseEffectValue} (切り上げ)`);
+        let tentacleBaseEffectValue = Math.ceil(tentacleRawBase * baseEffectUpMultiplier);
+        log.push(`【(B) 基礎効果の上昇】 前の値 (${tentacleRawBase}) × 効果上昇率 (${(baseEffectUpMultiplier*100-100).toFixed(0)}%) = ${tentacleBaseEffectValue} (切り上げ)`);
 
         currentBeforeOther = tentacleBaseEffectValue;
     } else {
-        let rawBase = Math.ceil(atk * multiplier);
-        log.push(`【初期値：乗算】 ステータス値 (${atk}) × 倍率 (${(multiplier*100).toFixed(0)}%) = ${rawBase} (切り上げ)`);
+        let rawBase = Math.ceil(atk * multiplier * baseBuffMultiplier);
+        log.push(`【(A) 初期値：乗算】 ステータス値 (${atk}) × 倍率 (${(multiplier*100).toFixed(0)}%) × 初期値バフ倍率 (${(baseBuffMultiplier*100-100).toFixed(0)}%) = ${rawBase} (切り上げ)`);
 
         let baseDamage = rawBase + baseAdd;
         if (baseAdd > 0) {
-            log.push(`【初期値：加算】 前の値 (${rawBase}) + 初期値への加算 (${baseAdd}) = ${baseDamage}`);
+            log.push(`【(A') 初期値：加算】 前の値 (${rawBase}) + 初期値への加算 (${baseAdd}) = ${baseDamage}`);
         }
 
-        let step1 = Math.ceil(baseDamage * baseBuffMultiplier);
-        log.push(`【(A) 初期値バフ】 初期値 (${baseDamage}) × バフ倍率 (${(baseBuffMultiplier*100-100).toFixed(0)}%) = ${step1} (切り上げ)`);
+        /*let step1 = Math.ceil(baseDamage * baseBuffMultiplier);
+        log.push(`【(A) 初期値バフ】 初期値 (${baseDamage}) × バフ倍率 (${(baseBuffMultiplier*100-100).toFixed(0)}%) = ${step1} (切り上げ)`);*/
 
-        let step2 = Math.ceil(step1 * baseEffectUpMultiplier);
-        log.push(`【(B) 基礎効果の上昇】 前の値 (${step1}) × 効果上昇率 (${(baseEffectUpMultiplier*100-100).toFixed(0)}%) = ${step2} (切り上げ)`);
+        let step2 = Math.ceil(baseDamage * baseEffectUpMultiplier);
+        log.push(`【(B) 基礎効果の上昇】 前の値 (${baseDamage}) × 効果上昇率 (${(baseEffectUpMultiplier*100-100).toFixed(0)}%) = ${step2} (切り上げ)`);
 
         let step3 = Math.ceil(step2 * damageEnhance);
         if (hasDamageEnhance) {
