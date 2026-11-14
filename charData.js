@@ -218,15 +218,15 @@ const CHARACTER_MASTER = [
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [12, 14.4, 16.8, 19.2, 21.6, 24] }]
             },
             { name: "灼蝋の欲望",
-              description: "次元影像の効果は初期値バフに記入してください（要検証）",
+              description: "霊識適性の反撃獲得には対応していません。次元影像の効果は初期値バフに記入してください（要検証）",
               effects: [{ type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [5, 6, 7, 8, 9, 10] }]
             },
             { name: "蜂蜜色の幻想惨劇",
-              description: "3凸効果は初期値バフに記入してください",
+              description: "霊識適性・3凸効果は初期値バフに記入してください",
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [45, 54, 63, 72, 81, 90] }]
             },
             { name: "苦難は蜜の味（極限解放）",
-              description: "3凸効果は初期値バフに記入してください、極限解放効果によるシールドの増加は対応していません",
+              description: "霊識適性・3凸効果は初期値バフに記入してください、極限解放効果によるシールドの増加は対応していません",
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [45, 54, 63, 72, 81, 90] }]
             }
         ]
@@ -392,6 +392,7 @@ const CHARACTER_MASTER = [
               effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
             { name: "魂の序曲",
+              description: "霊識適性の効果は初期値バフに記入してください",
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [60, 72, 84, 96, 108, 120] }]
             },
             { name: "原初の奏響",
@@ -545,7 +546,8 @@ const CHARACTER_MASTER = [
               effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
             { name: "変身する体",
-              effects: [{ type: "poison", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [8, 9.6, 11.2, 12.8, 14.4, 16] }]
+              effects: [{ type: "poison", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [8, 9.6, 11.2, 12.8, 14.4, 16] },
+                        { type: "heal", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [3, 3.6, 4.2, 4.8, 5.4, 6] }]
             },
             { name: "逆鱗の守り",
               description: "3凸効果は初期値バフに記入してください",
@@ -553,6 +555,7 @@ const CHARACTER_MASTER = [
                         { type: "poison", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [8, 9.6, 11.2, 12.8, 14.4, 16] }]
             },
             { name: "破砕の沈戟",
+              description: "霊識適性の効果は初期値バフに記入してください",
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: [80, 84, 88, 92, 96, 100], skills: [30, 36, 42, 48, 54, 60] }]
             },
             { name: "異端の継承",
@@ -563,6 +566,7 @@ const CHARACTER_MASTER = [
             { name: "不屈の意志",
               description: "力の獲得量はその他バフ・デバフ１から計算できます、極限解放の効果は基礎値バフに記入してください",
               effects: [{ type: "heal", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [25, 30, 35, 40, 45, 50] },
+                        { type: "poison", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [96, 96, 96, 96, 96, 96] },
                         { type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [3, 3.6, 4.2, 4.8, 5.4, 6] }]
             }
         ]
@@ -848,6 +852,7 @@ const CHARACTER_MASTER = [
               effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
             { name: "満たされぬ痛み",
+              description: "最終法則の効果はその他枠に記入してください（要検証）",
               effects: [{ type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [15, 18, 21, 24, 27, 30] }]
             },
             { name: "苦痛と歓喜",
@@ -1149,6 +1154,62 @@ const CHARACTER_MASTER = [
         ]
     },
     {
+        name: "ドゥルセイン",
+        baseAtk: 175, baseHp: 165, baseDef: 145, type: "limited",
+        cards: [
+            { name: "攻撃",
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
+            },
+            { name: "防御",
+              effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
+            },
+            { name: "亡骸の儀式",
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 200, tentacleBonus: 0, skills: [75, 90, 105, 120, 135, 150] }]
+            },
+            { name: "冥府への道",
+              description: "1凸効果は初期値バフに記入してください。力の獲得量はその他バフ・デバフ１から計算できます。カード効果はその他枠に記載してください（要検証）",
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [25, 30, 35, 40, 45, 50] },
+                        { type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [3, 3.6, 4.2, 4.8, 5.4, 6] }]
+            },
+            { name: "冥府の残響",
+              description: "専用遺物の追撃のダメージ計算用、スキルレベルはどれを選んでも同じです",
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [100, 100, 100, 100, 100, 100] }]
+            },
+            { name: "生者の饗宴",
+              description: "霊識適性の効果はその他枠に記載してください（要検証）",
+              effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 500, tentacleBonus: 0, skills: [200, 240, 280, 320, 360, 400] }]
+            },
+            { name: "万霊の飽食（極限解放）",
+              description: "前列の敵に与えるダメージ回数で計算しています。霊識適性の効果はその他枠に記載してください（要検証）",
+              effects: [{ type: "damage", stat: "atk", hits: 2, powerBonus: 500, tentacleBonus: 0, skills: [200, 240, 280, 320, 360, 400] }]
+            },
+            { name: "永夜の饗宴（力の獲得）",
+              description: "饗宴効果（力の獲得）計算用、スキルレベルはどれを選んでも同じです、派生カードのため倍率にずれの可能性あり",
+              effects: [{ type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [20, 20, 20, 20, 20, 20] }]
+            },
+            { name: "永夜の饗宴（力の減少）",
+              description: "饗宴効果（力の獲得）計算用、スキルレベルはどれを選んでも同じです、派生カードのため倍率にずれの可能性あり",
+              effects: [{ type: "other1", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [60, 60, 60, 60, 60, 60] }]
+            },
+            { name: "永夜の饗宴（深紅の炉）",
+              description: "饗宴効果（深紅の炉の獲得）計算用、スキルレベルはどれを選んでも同じです、派生カードのため倍率にずれの可能性あり",
+              effects: [{ type: "other1", stat: "con", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [40, 40, 40, 40, 40, 40] }]
+            },
+            { name: "永夜の饗宴（侵蝕）",
+              description: "饗宴効果（侵蝕）計算用、スキルレベルはどれを選んでも同じです、派生カードのため倍率にずれの可能性あり",
+              effects: [{ type: "other1", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [2000, 2000, 2000, 2000, 2000, 2000] }]
+            },
+            { name: "永夜の饗宴（毒）",
+              description: "饗宴効果（力の獲得）計算用、スキルレベルはどれを選んでも同じです、派生カードのため倍率にずれの可能性あり",
+              effects: [{ type: "poison", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [100, 100, 100, 100, 100, 100] }]
+            },
+            { name: "永夜の饗宴（反撃）",
+              description: "饗宴効果（力の獲得）計算用、スキルレベルはどれを選んでも同じです、派生カードのため倍率にずれの可能性あり",
+              effects: [{ type: "poison", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [50, 50, 50, 50, 50, 50] }]
+            }
+        ]
+    },
+    {
         name: "リッツ",
         baseAtk: 185, baseHp: 135, baseDef: 145, type: "standard",
         cards: [
@@ -1254,17 +1315,18 @@ const CHARACTER_MASTER = [
         baseAtk: 175, baseHp: 125, baseDef: 130, type: "standard",
         cards: [
             { name: "攻撃",
+              description: "霊識適性の効果は特殊加算枠に記入してください（要検証）",
               effects: [{ type: "damage", stat: "atk", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
             { name: "防御",
               effects: [{ type: "shield", stat: "def", hits: 1, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             },
             { name: "鼠たちの突撃",
-              description: "スキルレベルは鼠たちの集結と同じにしてください、次元影像の効果は初期値バフに記入してください（要検証）",
+              description: "スキルレベルは鼠たちの集結と同じにしてください、次元影像の効果は初期値バフに記入してください（要検証）、霊識適性の効果は特殊加算枠に記入してください（要検証）",
               effects: [{ type: "damage", stat: "atk", hits: 3, powerBonus: 100, tentacleBonus: 0, skills: [20, 24, 28, 32, 36, 40] }]
             },
             { name: "ブラウン出撃",
-              description: "3凸効果は初期値バフに記入してください、1,2凸効果は力に足してください（要検証）",
+              description: "3凸効果は初期値バフに記入してください、1,2凸効果は力に足してください（要検証）、霊識適性の効果は特殊加算枠に記入してください（要検証）",
               effects: [{ type: "damage", stat: "atk", hits: 3, powerBonus: 100, tentacleBonus: 0, skills: [10, 12, 14, 16, 18, 20] }]
             }
         ]
